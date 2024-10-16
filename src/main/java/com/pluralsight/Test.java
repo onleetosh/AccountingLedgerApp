@@ -32,6 +32,22 @@ public class Test {
         // Calculate the first day of the month (Month-to-date period)
         LocalDate firstOfMonth = today2.withDayOfMonth(1);
 
+
         System.out.println("Get first day of October: " + firstOfMonth);
+
+        LocalDate lastMonth = LocalDate.from(current.withMonth(9)).withDayOfMonth(1).minusDays(1);
+        System.out.println("Show previous month" + lastMonth);
+
+        LocalDate endOfRange = LocalDate.from(current.withMonth(9)).withDayOfMonth(30).plusDays(1);
+        System.out.println("Show previous month" + endOfRange);
+
+        LocalDate jan1 = LocalDate.from(current.withMonth(1)).withDayOfMonth(1);
+        System.out.println("Show first day of year " + jan1);
+
+        LocalDate startOfRange = LocalDate.from(current.withMonth(1)).withDayOfMonth(1).minusDays(1);
+
+        System.out.println("\nTesting out " + startOfRange);
+
+
     }
 }

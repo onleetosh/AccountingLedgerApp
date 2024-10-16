@@ -1,5 +1,6 @@
 package com.pluralsight;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -71,7 +72,7 @@ public class Method {
     }
     //method designed to save a transaction when added
     private static void saveTransaction(){
-        try{
+        try {
 
             FileWriter fw = new FileWriter(dataFileName, true);
             BufferedWriter bw = new BufferedWriter(fw);
@@ -198,9 +199,9 @@ public class Method {
         do {
             //display format
             System.out.println("                                 Debits");
-            System.out.println("--------------------------------------------------------------------------");
-            System.out.printf("%10s | %10s | %15s | %15s |  %s \n", "date", "time", "description", "vendor", "amount");
-            System.out.println("--------------------------------------------------------------------------");
+            System.out.println("------------------------------------------------------------------------");
+            System.out.printf("%10s | %10s | %15s | %15s | %s \n", "date", "time", "description", "vendor", "amount");
+            System.out.println("------------------------------------------------------------------------");
             //loop through and display transactions less than 0
             for (Transaction entry : entries) {
                 if (entry.getAmount() < 0) {
@@ -215,10 +216,10 @@ public class Method {
         int option;
         //keep showing display while true
         while(true) {
-            System.out.println("------------------------------------------------------");
-            System.out.println("                    Look Up Reports");
-            System.out.println("------------------------------------------------------");
-            System.out.println(" 1) Search by Month to Date " +
+            System.out.println("------------------------------------------------------------------------");
+            System.out.println("                           Look Up Report ");
+            System.out.println("------------------------------------------------------------------------");
+            System.out.println(" 1) Filter by Month to Date " +
                     "\n 2) Filter by Previous Month" +
                     "\n 3) Filter by Year to Date" +
                     "\n 4) Filter by Previous Year" +
@@ -265,9 +266,9 @@ public class Method {
         //continue to prompt new entries until user enters NO
         do {
             // System.out.println(" \n ---- Debit ----- ");
-            System.out.println("-------------------------------");
-            System.out.println("          New Debit ");
-            System.out.println("-------------------------------");
+            System.out.println("------------------------------------------------------------------------");
+            System.out.println("                            New Debit ");
+            System.out.println("------------------------------------------------------------------------");
             //String date = Console.PromptForString(" Date: ");
             //String time = Console.PromptForString(" Time: ");
             String date = current.format(fmtDate);
@@ -276,6 +277,7 @@ public class Method {
             String vendor = Console.PromptForString(" Vendor: ");
             float amount = Console.PromptForFloat(" Amount: ");
             Transaction debit = new Transaction(date, time, description, vendor, amount);
+
             transactions.add(debit);
             saveTransaction();
         } while (Console.PromptForYesNo(" Add another debit? ")); //end loop when user input  no
@@ -285,18 +287,27 @@ public class Method {
 
         //TODO: give user option to make a current or past Deposit
 
-
-
         //continue to prompt new deposit while user enters Yes
         do {
            // System.out.println("\n--- Deposit --- ");
-            System.out.println("-------------------------------");
-            System.out.println("         New Deposit ");
-            System.out.println("-------------------------------");
-            //String date = Console.PromptForString(" Date: ");
-            //String time = Console.PromptForString(" Time: ");
-            String date = current.format(fmtDate);
-            String time = current.format(fmtTime);
+           //System.out.println("-------------------------------");
+            System.out.println("------------------------------------------------------------------------");
+            System.out.println("                            New Deposit ");
+            System.out.println("------------------------------------------------------------------------");
+
+            String date;
+            String time;
+
+                if (Console.PromptForYesNo("Is this deposit recent?")) {
+                     date = current.format(fmtDate);
+                     time = current.format(fmtTime);
+                }
+
+           // System.out.println("-------------------------------");
+             date = Console.PromptForString(" Date: ");
+             time = Console.PromptForString(" Time: ");
+           // String date = current.format(fmtDate);
+            // String time = current.format(fmtTime);
             String description = Console.PromptForString(" Description: ");
             String vendor = Console.PromptForString(" Vendor: ");
             float amount = Console.PromptForFloat(" Amount: ");
@@ -306,26 +317,25 @@ public class Method {
         }
         while(Console.PromptForYesNo(" Add another Deposit?")); //end loop when user inputs No
     }
-    //method displayed to
+    //method designed to show all transactions from october
     private static void showByMonthToDate(ArrayList<Transaction> dates) {
         //keep showing display and wait for a response Yes or NO
         do {
-            System.out.println("Displaying MTD entries");
-            LocalDate today = LocalDate.now();
-
-            // Calculate the first day of the month (Month-to-date period)
-            LocalDate firstOfMonth = today.withDayOfMonth(1);
-            LocalDate endOfRange = LocalDate.of(2024, 10, 1); // You can adjust this range based on requirements
+            //declare range to filter
+            LocalDate today = LocalDate.from(current).plusDays(1);  // + 1 to include current date in range
+            LocalDate endOfRange = today.withDayOfMonth(1).minusDays(1); // -1 to include 1st day of month in range
 
             boolean found = false;
+
+            System.out.println("                           M-T-D Entries");
             System.out.println("------------------------------------------------------------------------");
             System.out.printf("%10s | %10s | %15s | %15s | %s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("------------------------------------------------------------------------");
-            // Loop through each transaction and filter by the date range
+            // Loop through each transaction and find date in the range
             for (Transaction date : dates) {
                 LocalDate transactionDate = LocalDate.parse(date.getDate(), fmtDate);
-                if (!transactionDate.isBefore(firstOfMonth) && !transactionDate.isAfter(endOfRange)){
-                    // Print the transaction if it falls within the date range
+                if (transactionDate.isAfter(endOfRange) && transactionDate.isBefore(today)) {
+                    // Print the transaction that falls within the range
                     System.out.printf("%10s | %10s | %15s | %15s |  $%.2f \n",
                             date.getDate(), date.getTime(), date.getDescription(), date.getVendor(), date.getAmount());
                     found = true;
@@ -334,55 +344,32 @@ public class Method {
             if (!found) {
                 System.out.println("No match");
             }
-
         }
         while(!Console.PromptForYesNo("Would you like to change filter?")); // loop ends when user inputs Yes
-
     }
+    //method designed to show all transactions from september
     private static void showByPreviousMonth(ArrayList<Transaction> dates) {
+        //keep showing display and wait for a response Yes or NO
         do {
-            System.out.println("Enter Previous Month as formatted (Ex. 10-01-2024)");
+            //declare range to filter
+            //-1 to include sept 1 in range
+            LocalDate startOfRange = LocalDate.from(current.withMonth(9)).withDayOfMonth(1).minusDays(1);
+            //+1 to include sept 30 in range
+            LocalDate endOfRange = LocalDate.from(current.withMonth(9)).withDayOfMonth(30).plusDays(1);
 
-            String previousMonth = Console.PromptForString("Date:");
             boolean found = false;
-            // Parse input strings to LocalDate
-            LocalDate month = LocalDate.parse(previousMonth, fmtDate);
 
+            System.out.println("                           Previous Month's Entries");
             System.out.println("------------------------------------------------------------------------");
             System.out.printf("%10s | %10s | %15s | %15s | %s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("------------------------------------------------------------------------");
+            // Loop through array to find all transactions in range specific
             for (Transaction date : dates) {
+                //parse transaction dates string
                 LocalDate transactionDate = LocalDate.parse(date.getDate(), fmtDate);
-                if (transactionDate.isBefore(month)) {
-                    System.out.printf("%10s | %10s | %15s | %15s |  $%.2f \n",
-                            date.getDate(), date.getTime(), date.getDescription(), date.getVendor(), date.getAmount());
-                    found = true;
-                }
-            }
-            if (!found) {
-                System.out.println("No match");
-            }
-        } while(!Console.PromptForYesNo("Would you like to change filter?")); // loop ends when user inputs Yes
-    }
-    private static void showByYearToDate(ArrayList<Transaction> dates) {
-        do {
-            System.out.println("Enter the first date of the Year (Jan 1) and Current Date to filter ");
-
-            String start = Console.PromptForString(" Start: ");
-            String end = Console.PromptForString(" End: ");
-            boolean found = false;
-
-            LocalDate startDate = LocalDate.parse(start);
-            LocalDate endDate = LocalDate.parse(end);
-            System.out.println("------------------------------------------------------------------------");
-            System.out.printf("%10s | %10s | %15s | %15s | %s \n", "date", "time", "description", "vendor", "amount");
-            System.out.println("------------------------------------------------------------------------");
-            // Loop through each transaction and filter by the date range
-            for (Transaction date : dates) {
-                LocalDate transactionDate = LocalDate.parse(date.getDate(), fmtDate);
-                if ((transactionDate.isEqual(startDate) || transactionDate.isAfter(startDate)) &&
-                        (transactionDate.isEqual(endDate) || transactionDate.isBefore(endDate))) {
-                    // Print the transaction if it falls within the date range
+                //if transaction is after Aug 31 and before Oct 1 than print transaction
+                if (transactionDate.isAfter(startOfRange) && transactionDate.isBefore(endOfRange)) {
+                    // Print the transaction that falls within the range
                     System.out.printf("%10s | %10s | %15s | %15s |  $%.2f \n",
                             date.getDate(), date.getTime(), date.getDescription(), date.getVendor(), date.getAmount());
                     found = true;
@@ -394,22 +381,62 @@ public class Method {
         }
         while(!Console.PromptForYesNo("Would you like to change filter?")); // loop ends when user inputs Yes
     }
+    // method designed to show all transactions from year 2024
+    private static void showByYearToDate(ArrayList<Transaction> dates) {
+        //keep showing display and wait for a response Yes or NO
+        do {
+            //declare range to filter
+            //+1 to include current day in range
+            LocalDate today = LocalDate.from(current).plusDays(1);
+            //-1 to include Jan 1 2024 in range
+            LocalDate startOfRange = LocalDate.from(current.withMonth(1)).withDayOfMonth(1).minusDays(1);
+
+            boolean found = false;
+
+            System.out.println("                          Y-T-D Entries");
+            System.out.println("------------------------------------------------------------------------");
+            System.out.printf("%10s | %10s | %15s | %15s | %s \n", "date", "time", "description", "vendor", "amount");
+            System.out.println("------------------------------------------------------------------------");
+            // Loop through array to find all transactions in range specific
+            for (Transaction date : dates) {
+                //parse transaction dates string
+                LocalDate transactionDate = LocalDate.parse(date.getDate(), fmtDate);
+                //if transaction is after Aug 31 and before Oct 1 than print transaction
+                if (transactionDate.isAfter(startOfRange) && transactionDate.isBefore(today)) {
+                    // Print the transaction that falls within the range
+                    System.out.printf("%10s | %10s | %15s | %15s |  $%.2f \n",
+                            date.getDate(), date.getTime(), date.getDescription(), date.getVendor(), date.getAmount());
+                    found = true;
+                }
+            }
+            if (!found) {
+                System.out.println("No match");
+            }
+        }
+        while(!Console.PromptForYesNo("Would you like to change filter?")); // loop ends when user inputs Yes
+
+    }
+    //show all transactions from data in 2023
     private static void showByPreviousYear(ArrayList<Transaction> dates) {
         do {
-            System.out.println("Enter Previous Year as formatted ( Ex. 01-01-2024 )");
+            //declare range to filter
+            //-1 to include sept 1 in range
+            LocalDate startOfRange = LocalDate.from(current.withMonth(1)).withDayOfMonth(1).minusDays(1);
 
-            String previousYear = Console.PromptForString("Date:");
 
             boolean found = false;
-            // Parse string to LocalDate
-            LocalDate year = LocalDate.parse(previousYear, fmtDate);
 
+            System.out.println("                           Previous Year Entries");
             System.out.println("------------------------------------------------------------------------");
             System.out.printf("%10s | %10s | %15s | %15s | %s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("------------------------------------------------------------------------");
+            // Loop through array to find all transactions in range specific
             for (Transaction date : dates) {
+                //parse transaction dates string
                 LocalDate transactionDate = LocalDate.parse(date.getDate(), fmtDate);
-                if (transactionDate.isBefore(year)) {
+                //if transaction is after Aug 31 and before Oct 1 than print transaction
+                if (transactionDate.isBefore(startOfRange)) {
+                    // Print the transaction that falls within the range
                     System.out.printf("%10s | %10s | %15s | %15s |  $%.2f \n",
                             date.getDate(), date.getTime(), date.getDescription(), date.getVendor(), date.getAmount());
                     found = true;
@@ -420,6 +447,8 @@ public class Method {
             }
         }
         while(!Console.PromptForYesNo("Would you like to change filter?")); // loop ends when user inputs Yes
+
+
 
     }
     private static void searchByVendor(ArrayList<Transaction> vendors) {
@@ -446,5 +475,6 @@ public class Method {
         while(!Console.PromptForYesNo("Would you like to change filter?")); // loop ends when user inputs Yes
 
     }
+
 
 }
