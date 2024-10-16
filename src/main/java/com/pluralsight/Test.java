@@ -1,15 +1,16 @@
 package com.pluralsight;
 
-import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+/***
+ * This class is used to run test. Not part of the main Project and should not be used
+ */
 
 public class Test {
 
     private static LocalDateTime current = LocalDateTime.now();
     private static DateTimeFormatter fmtDate = DateTimeFormatter.ofPattern("MM-dd-yyyy");
-    private static DateTimeFormatter fmtTime = DateTimeFormatter.ofPattern("HH:mm:ss");
     public static void main(String[] args) {
 
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("MM/dd/yyyy");

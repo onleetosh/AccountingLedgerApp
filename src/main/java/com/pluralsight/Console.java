@@ -1,7 +1,10 @@
 package com.pluralsight;
 
 import java.util.Scanner;
-
+/***
+ * This class is for built for utility purpose with pre-defined methods
+ * designed to request user input values
+ */
 public class Console {
     static Scanner input = new Scanner(System.in);
 
@@ -16,13 +19,13 @@ public class Console {
 
     public static boolean PromptForYesNo(String prompt){
         System.out.print(prompt + " ( Y for Yes, N for No ) ?" );
-        String userinput = input.nextLine().trim();
+        String userInput = input.nextLine().trim();
 
         return
                 (
-                        userinput.equalsIgnoreCase("Y")
+                        userInput.equalsIgnoreCase("Y")
                                 ||
-                                userinput.equalsIgnoreCase("YES")
+                                userInput.equalsIgnoreCase("YES")
                 );
 
     }

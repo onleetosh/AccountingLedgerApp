@@ -3,7 +3,7 @@ date|time|description|vendor|amount
 10-17-2024|03:30:00|MacBook Pro|Apple|-1200.0
 10-16-2024|04:40:00|Tv|Samsung|-400.0
 10-25-2024|10:00:00|check|Staple|4999.99
-10-25-2024|04:40:30|pet |Petco|-42.87
+10-25-2024|04:40:30|pet|Petco|-42.87
 12-31-2023|10:20:00|bill|Apple|-19.99
 09-30-2024|11:02:00|bill|Hulu|-19.99
 10-20-2024|11:04:00|bill|Disney+|-9.99
@@ -16,3 +16,9 @@ date|time|description|vendor|amount
 07-20-2023|09:20:00|check|Year Up|100.0
 10-15-2024|23:35:07|HRA|check|389.99
 10-03-2024|08:00:00|bill|Geico|-189.99
+11-11-2023|01:02:00|HRA|check|300.98
+10-16-2024|16:23:52|HRA|check|180.0
+09-02-2023|10:20:00|HRA|check|300.0
+10-16-2024|16:30:26|Fortnite|v-bucks|-23.98
+11-19-2023|10:20:00|Fortnite|v-bucks|-23.98
+10-16-2024|19:01:40|Target|essentials|-30.0

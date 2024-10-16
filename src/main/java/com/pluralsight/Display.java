@@ -2,6 +2,11 @@ package com.pluralsight;
 
 import java.io.*;
 
+/***
+ * This class is designed to provide an interactive menu, allowing a user to make decisions and perform
+ * different actions by calling pre-defined methods
+ */
+
 public class Display {
 
     public static void main(String[] args) throws IOException {
@@ -25,7 +30,6 @@ public class Display {
                         userInput = Method.displayLedgerPrompt();
 
                         if (userInput == 'A') {
-
                             Method.displayAllEntries(Method.transactions);
                         }
                         if (userInput == 'D') {
