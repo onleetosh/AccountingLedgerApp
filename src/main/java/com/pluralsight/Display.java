@@ -1,6 +1,5 @@
 package com.pluralsight;
 
-import java.io.*;
 
 /***
  * "Display" class is designed to provide an interactive menu, allowing a user to
@@ -10,8 +9,9 @@ import java.io.*;
 
 public class Display {
 
-    public static void main(String[] args) throws IOException {
-        try {
+    public static void main(String[] args) {
+            System.out.println("\n Welcome to Year Up United beta \"CLI Application\"");
+
             char userInput;
             do {
                 //Begin user prompt
@@ -34,7 +34,7 @@ public class Display {
                             Method.displayAllEntries(Method.transactions);
                         }
                         if (userInput == 'D') {
-                            Method.displayDeposits(Method.transactions);
+                            Method.displayDepositEntries(Method.transactions);
                         }
                         if (userInput == 'P') {
                             Method.displayDebitEntries(Method.transactions);
@@ -42,15 +42,8 @@ public class Display {
                         if (userInput == 'R') {
                                Method.displayReports();
                         }
-                    }
-                    while (userInput != 'H'); //break out of loop and return to home page
+                    } while (userInput != 'H'); //break out of loop and return to home page
                 }
-            }
-            while (userInput != 'X'); //exit program
-        }
-        catch (Exception e){
-            System.out.println("Error");
-            e.printStackTrace();
-        }
+            }  while (userInput != 'X'); //exit program
     }
 }

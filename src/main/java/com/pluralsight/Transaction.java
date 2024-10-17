@@ -1,5 +1,7 @@
 package com.pluralsight;
 
+import java.text.DecimalFormat;
+
 /***
  * "Transaction" class stores and manages information for individual transactions
  *  with details such as date, time, vendor, description, and amount;
@@ -14,6 +16,7 @@ public class Transaction {
     private String description;
     private String vendor;
     private double amount;   //change to double
+
 
     //constructor for a transaction
     public Transaction(String date, String time, String description, String vendor, double amount) {

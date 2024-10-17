@@ -1,11 +1,12 @@
 package com.pluralsight;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /***
- * "Test" class is used to run test. Not part of the main Project and should not be used
+ * "Test" class is used to run test. Not part of the main Project
  */
 public class Test {
 
@@ -48,6 +49,14 @@ public class Test {
         LocalDate startOfRange = LocalDate.from(current.withMonth(1)).withDayOfMonth(1).minusDays(1);
 
         System.out.println("\nTesting out " + startOfRange);
+
+        int x = 20000;
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        String formattedNumber = formatter.format(x);
+        System.out.println(formattedNumber);
+
+
+
 
 
     }
