@@ -55,6 +55,12 @@ public class Test {
         String formattedNumber = formatter.format(x);
         System.out.println(formattedNumber);
 
+        double amount = 1000;
+        String amt = String.valueOf(amount);
+
+        System.out.println("number:" + amount);
+        System.out.println("string : " +amt);
+
 
 
 

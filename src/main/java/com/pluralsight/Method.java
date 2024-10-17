@@ -154,7 +154,6 @@ public class Method {
     }
     public static void displayAllEntries(ArrayList<Transaction> entries) {
 
-
         //stay in current display and wait for a response Yes or NO
         do {
             System.out.println("---------------------------------------------------------------------------");
@@ -226,16 +225,15 @@ public class Method {
                     "\n 3) Filter by Year to Date" +
                     "\n 4) Filter by Previous Year" +
                     "\n 5) Filter by Vendor " +
+                    "\n 6) Custom Filter " +
                     "\n 0) Go back to Ledger ");
                         try {
                             //prompt user for command and return a filter method
                             command = Console.PromptForInt(("\n Enter [0, 1, 2, 3, 4, 5,] "));
 
                             switch (command){
-                                case 0:
-                                    return;
-                                case 1:
-                                    filterByMonthToDate(transactions);
+                                case 0: return;
+                                case 1: filterByMonthToDate(transactions);
                                     break;
                                 case 2: filterByPreviousMonth(transactions);
                                     break;
@@ -243,11 +241,11 @@ public class Method {
                                     break;
                                 case 4: filterByPreviousYear(transactions);
                                     break;
-                                case 5:
-                                    searchByVendor(transactions);
+                                case 5: searchByVendor(transactions);
                                     break;
-                                default:
-                                    System.out.println("Invalid");
+                                case 6: customFilter(transactions);
+                                    break;
+                                default: System.out.println("Invalid");
                                     break;
                             }
                         }
@@ -510,15 +508,42 @@ public class Method {
     //method designed to perform a custom search
     private static void customFilter(ArrayList<Transaction> customSearch){
         do {
-            String startDate = Console.PromptForString();
-            String endDate = Console.PromptForString();
-            String description = Console.PromptForString();
-            String vendor = Console.PromptForString();
-            double amount = Console.PromptForDouble();
+            System.out.println("Declaring filter...");
+            String past = Console.PromptForString("Past Date: "); //working
+            String present = Console.PromptForString("Present Date: ");//working
+            String description = Console.PromptForString("Description: "); //working
+            String vendor = Console.PromptForString("Vendor: "); //working
+            //String amount = Console.PromptForString("Amount: "); //fix
+            double amount = Console.PromptForDouble("Amount: ");
+            //use
+            LocalDate pastDate = LocalDate.parse(past, fmtDate);
+            LocalDate presentDate = LocalDate.parse(present, fmtDate);
 
+            boolean found = false;
+            System.out.println("---------------------------------------------------------------------------");
+            System.out.printf("%10s | %10s | %15s | %15s | %8s \n", "date", "time", "description", "vendor", "amount");
+            System.out.println("---------------------------------------------------------------------------");
+            for ( Transaction search: customSearch) {
+                LocalDate transactionDate = LocalDate.parse(search.getDate(), fmtDate);
 
+                boolean checkPastDate = past.isBlank() || transactionDate.isAfter(pastDate);
+                boolean checkPresentDate = present.isBlank() ||  transactionDate.isBefore(presentDate);
+                boolean checkDescription = description.isBlank() || description.equalsIgnoreCase(search.getDescription());
+                boolean checkVendor = vendor.isBlank() || vendor.equalsIgnoreCase(search.getVendor());
+                boolean checkAmount = String.valueOf(amount).isBlank()|| String.valueOf(amount).equals(String.valueOf(search.getAmount()));
 
-        } while(!Console.PromptForYesNo("Would you like to change filter?")); // loop ends when user inputs Yes
+                if( checkPastDate && checkPresentDate && checkDescription && checkVendor && checkAmount) {
+                    System.out.printf("%10s | %10s | %15s | %15s |  $%.2f \n",
+                            search.getDate(), search.getTime(), search.getDescription(), search.getVendor(), search.getAmount());
+                    found = true;
+                }
+            }
+            // If no match was found, print "no match" once after the loop
+            if (!found) {
+                System.out.println("\nNo match found");
+            }
+        } while(!Console.PromptForYesNo("\n Go back?")); // loop ends when user inputs Yes
+    }
 
 }
-}
+
