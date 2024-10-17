@@ -1,36 +1,43 @@
 date|time|description|vendor|amount
-04-03-2023|09:20:00|check|GoFundMe|1500.0
+03-03-2023|09:20:00|check|GoFundMe|2500.0
+04-03-2023|09:20:00|check|GoFundMe|2500.0
+04-03-2023|10:30:00|electronic|Sony|-1045.97
+05-01-2023|10:20:00|subscription|Apple Music|-19.99
 07-10-2023|12:00:00|travel|Airbnb|-1500.0
-07-20-2023|09:20:00|check|GoFundMe|700.0
-08-20-2023|10:00:00|refund|IRS|2900.0
-09-30-2023|12:00:00|streaming|Hulu|-69.99
+07-16-2023|23:27:24|internet|Optimum|-85.0
+07-25-2023|09:20:00|check|GoFundMe|900.0
+08-01-2023|10:20:00|subscription|Apple Music|-19.99
+08-10-2023|12:00:00|travel|Airbnb|-700.0
+08-16-2023|23:27:24|internet|Optimum|-85.0
+08-21-2023|10:00:00|refund|IRS|2900.0
+09-16-2023|23:27:24|internet|Optimum|-85.0
+09-30-2023|12:00:00|subscription|Hulu|-69.99
 10-13-2023|12:22:32|food|Chiptole|-14.50
+10-16-2023|23:27:24|internet|Optimum|-85.0
 11-01-2023|03:15:00|travel|Airbnb|-556.59
+11-16-2023|23:27:24|internet|Optimum|-85.0
 12-03-2023|03:30:00|electronic|Sony|-1045.97
-12-05-2023|12:00:00|check|Settlement|10000.00
-12-31-2023|10:20:00|bill|Apple Music|-19.99
+12-05-2023|12:00:00|check|Settlement|50000.00
+12-16-2023|23:27:24|internet|Optimum|-85.0
+12-31-2023|10:20:00|subscription|Apple Music|-19.99
+01-16-2024|23:27:24|internet|Optimum|-85.0
 01-20-2024|12:00:00|check|GoFundMe|1400.0
-01-31-2024|10:20:00|bill|Apple Music|-19.99
-02-05-2024|12:00:00|check|GoFundMe|1400.0
+01-31-2024|10:20:00|subscription|Apple Music|-19.99
+02-05-2024|12:00:00|check|GoFundMe|2400.0
+02-10-2024|03:15:00|travel|Airbnb|-436.59
 03-01-2024|10:20:00|bill|Apple Music|-19.99
 04-02-2024|02:00:00|travel|Airbnb|-650.0
-04-30-2024|10:20:00|bill|Apple Music|-19.99
-05-08-2024|10:20:00|food|Foodtown|-153.76
-05-31-2024|10:20:00|bill|Apple Music|-19.99
+04-30-2024|10:20:00|subscription|Apple Music|-19.99
+05-08-2024|10:20:00|food|Shoprite|-153.76
+05-31-2024|10:20:00|subscription|Apple Music|-19.99
 09-01-2024|01:29:00|electronic|Apple|-1002.97
 09-12-2024|12:22:32|food|Chiptole|-14.50
-09-30-2024|11:02:00|bill|Hulu|-79.99
-10-01-2024|10:20:00|bill|Apple Music|-19.99
+09-30-2024|11:02:00|subscription|Hulu|-79.99
+10-01-2024|10:20:00|subscription|Apple Music|-19.99
 10-03-2024|08:00:00|bill|Con-edison|-189.99
 10-15-2024|11:04:00|check|GoFundMe|1100.00
 10-15-2024|10:23:00|check|Year Up|250.0
-
-
-
-
 10-16-2024|23:27:24|Year Up|check|400.0
-10-16-2024|23:27:24|Optimum|internet|-85.0
-
-
-10-17-2024|00:24:20|Year Up|check|250.0
-10-17-2024|00:33:20|Dennys|food|-64.56
+10-16-2024|23:27:24|internet|Optimum|-85.0
+10-17-2024|00:24:20|check|Year Up|250.0
+10-17-2024|00:33:20|food|BBQs|-64.56

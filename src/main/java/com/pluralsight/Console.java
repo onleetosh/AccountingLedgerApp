@@ -51,12 +51,14 @@ public class Console {
         return number;
     }
 
+
     public static double PromptForDouble(String prompt){
         System.out.print(prompt);
         String stringNumber = input.nextLine().trim();
         double number = Double.parseDouble(stringNumber);
         return number;
     }
+
     public static double PromptForDouble(){
         String stringNumber = input.nextLine().trim();
         double number = Double.parseDouble(stringNumber);

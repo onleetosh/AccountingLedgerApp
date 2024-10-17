@@ -7,6 +7,8 @@ package com.pluralsight;
  *  and is where the program runs
  */
 
+
+//TODO : sort list.
 public class Display {
 
     public static void main(String[] args) {
@@ -28,18 +30,19 @@ public class Display {
                 //If user enters L, display the ledger screen
                 if (userInput == 'L') {
                     do {
+                        //user input not set to prompts called in ledger prompt method
                         userInput = Method.displayLedgerPrompt();
 
-                        if (userInput == 'A') {
+                        if (userInput == 'A') { //call display all method
                             Method.displayAllEntries(Method.transactions);
                         }
-                        if (userInput == 'D') {
+                        if (userInput == 'D') { //call display deposit method
                             Method.displayDepositEntries(Method.transactions);
                         }
-                        if (userInput == 'P') {
+                        if (userInput == 'P') { //call display debit method
                             Method.displayDebitEntries(Method.transactions);
                         }
-                        if (userInput == 'R') {
+                        if (userInput == 'R') { //call report method
                                Method.displayReports();
                         }
                     } while (userInput != 'H'); //break out of loop and return to home page

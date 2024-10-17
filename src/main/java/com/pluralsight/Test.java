@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 /***
  * "Test" class is used to run test. Not part of the main Project
@@ -61,9 +62,73 @@ public class Test {
         System.out.println("number:" + amount);
         System.out.println("string : " +amt);
 
+    }
+
+    private static void customFilter(ArrayList<Transaction> customSearch){
+        do {
+            //double amount = 0;
+            System.out.println("\n Declaring filter...\n");
+            String past = Console.PromptForString(" Start (Past) Date: "); //working
+            String present = Console.PromptForString(" End (Present) Date: ");//working
+            String description = Console.PromptForString(" Description: "); //working
+            String vendor = Console.PromptForString(" Vendor: "); //working
+            // String amount = Console.PromptForString("Amount: "); //fix
+            //double amount = Console.PromptForDouble(" Amount (0 to skip): ");
+
+            /*
+            // convert string input to date objects
+            LocalDate pastDate = null; //default to empty
+            LocalDate presentDate = null; //default to empty
+
+            //if past or present is left blank
+            if(!past.isBlank()) {
+                //convert string (past) input to a date object
+                pastDate = LocalDate.parse(past, fmtDate);
+            }
+            if(!present.isBlank()) {
+                //convert string (present) input to a date object
+                presentDate = LocalDate.parse(present, fmtDate);
+            }
+
+             */
+
+            LocalDate pastDate = LocalDate.parse(past, fmtDate);
+            LocalDate presentDate = LocalDate.parse(present, fmtDate);
+
+            boolean found = false;
+            System.out.println("---------------------------------------------------------------------------");
+            System.out.printf("%10s | %10s | %15s | %15s | %8s \n", "date", "time", "description", "vendor", "amount");
+            System.out.println("---------------------------------------------------------------------------");
+
+            for ( Transaction transaction: customSearch ) {
 
 
+                LocalDate transactionDate = LocalDate.parse(transaction.getDate(), fmtDate);
 
+                /***
+                 *  convert transaction amount (a double) to a String and compare string value:
+                 *      String amount = Console.PromptForString(" Amount: ");
+                 *      String transactionAmount = String.valueOf(search.getAmount());
+                 *      boolean checkAmount = amount.isBlank() || amount.equalsIgnoreCase(search.getAmount)
+                 */
 
+                boolean checkPastDate = past.isBlank() || transactionDate.isAfter(pastDate);
+                boolean checkPresentDate = present.isBlank() ||  transactionDate.isBefore(presentDate);
+                boolean checkDescription = description.isBlank() || description.equalsIgnoreCase(transaction.getDescription());
+                boolean checkVendor = vendor.isBlank() || vendor.equalsIgnoreCase(transaction.getVendor());
+                // boolean checkAmount = String.valueOf(amount).isBlank() || String.valueOf(amount).equalsIgnoreCase(String.valueOf(transaction.getAmount()));
+                //   boolean checkAmount = amount.isBlank() || amount.equals(transaction.getAmount()); && checkAmount
+
+                if( checkPastDate && checkPresentDate && checkDescription && checkVendor ) {
+                    System.out.printf("%10s | %10s | %15s | %15s |  $%.2f \n",
+                            transaction.getDate(), transaction.getTime(), transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
+                    found = true;
+                }
+            }
+            // If no match was found, print "no match" once after the loop
+            if (!found) {
+                System.out.println("\nNo match found");
+            }
+        } while(!Console.PromptForYesNo("\n Go back?")); // loop ends when user inputs Yes
     }
 }
