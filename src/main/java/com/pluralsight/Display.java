@@ -1,14 +1,9 @@
+/***
+ * "Display" class is designed to provide an interactive menu, allowing a user to make decisions and perform
+ *  different actions by calling pre-defined methods, and is where the program runs
+ */
 package com.pluralsight;
 
-
-/***
- * "Display" class is designed to provide an interactive menu, allowing a user to
- *  make decisions and perform different actions by calling pre-defined methods,
- *  and is where the program runs
- */
-
-
-//TODO : sort list.
 public class Display {
 
     public static void main(String[] args) {

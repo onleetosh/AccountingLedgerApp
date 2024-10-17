@@ -1,13 +1,13 @@
+/***
+ * "Console" class is for built for utility purpose with pre-defined methods designed to request user input values
+ */
 package com.pluralsight;
 
 import java.util.Scanner;
 
-/***
- * Console class is for built for utility purpose with pre-defined methods
- * designed to request user input values
- */
 
 public class Console {
+
     static Scanner input = new Scanner(System.in);
 
     public static String PromptForString(String prompt){
@@ -51,12 +51,24 @@ public class Console {
         return number;
     }
 
-
     public static double PromptForDouble(String prompt){
         System.out.print(prompt);
         String stringNumber = input.nextLine().trim();
         double number = Double.parseDouble(stringNumber);
         return number;
+    }
+
+    public static float PromptForFloat(String prompt){
+        System.out.print(prompt);
+        String stringNumber = input.nextLine().trim();
+        float number = Float.parseFloat(stringNumber);
+        return  number;
+    }
+
+    public static float PromptForFloat(){
+        String stringNumber = input.nextLine().trim();
+        float number = Float.parseFloat(stringNumber);
+        return  number;
     }
 
     public static double PromptForDouble(){
@@ -78,16 +90,5 @@ public class Console {
         return number;
     }
 
-    public static float PromptForFloat(String prompt){
-        System.out.print(prompt);
-        String stringNumber = input.nextLine().trim();
-        float number = Float.parseFloat(stringNumber);
-        return  number;
-    }
 
-    public static float PromptForFloat(){
-        String stringNumber = input.nextLine().trim();
-        float number = Float.parseFloat(stringNumber);
-        return  number;
-    }
 }

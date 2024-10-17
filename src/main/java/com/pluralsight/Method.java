@@ -1,5 +1,8 @@
-package com.pluralsight;
+/***
+ * "Method" class contains several methods that perform specific actions when called upon
+ */
 
+package com.pluralsight;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -12,15 +15,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.regex.Pattern;
 
+// TODO : sort list in descending order from current to past entries
 
-/***
- * "Method" class contains several methods that perform specific actions when called on
- */
 public class Method {
 
+
     private static final String dataFileName = "transactions.csv";
+    //declare a variable with objects from the array list
     static ArrayList<Transaction> transactions = getTransactions();
+    //declare a variable that represents current date and time
     private static final LocalDateTime current = LocalDateTime.now();
+    //declare variables and assign specific format patterns
     private static final DateTimeFormatter fmtDate = DateTimeFormatter.ofPattern("MM-dd-yyyy");
     private static final DateTimeFormatter fmtTime = DateTimeFormatter.ofPattern("HH:mm:ss");
 
@@ -103,6 +108,7 @@ public class Method {
 
             String command = Console.PromptForString(("\nEnters [D, P, L, X] to continue "));
 
+            //conditions with return values
             if ( command.equalsIgnoreCase("D")){
                 return 'D';
             }
@@ -162,16 +168,16 @@ public class Method {
         //stay in current display and wait for a response Yes or NO
         do {
             System.out.println("---------------------------------------------------------------------------");
-            System.out.println("\n                               Account");
+            System.out.println("                               Account");
             System.out.println("---------------------------------------------------------------------------");
             System.out.printf("%10s | %10s | %15s | %15s | %8s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("---------------------------------------------------------------------------");
 
-            // Sort and print entries present to past date
+            // Sort and display entries in descending order from most recent to past date
             Collections.sort(transactions, (d1, d2) -> {
-                LocalDate descend = LocalDate.parse(d1.getDate(), fmtDate);
-                LocalDate ascend = LocalDate.parse(d2.getDate(), fmtDate);
-                return ascend.compareTo(descend); // Sort in order descending
+                LocalDate recent = LocalDate.parse(d1.getDate(), fmtDate);
+                LocalDate previous = LocalDate.parse(d2.getDate(), fmtDate);
+                return previous.compareTo(recent); //compare and sort in recent to past order
             });
 
             for (Transaction entry : entries) {
@@ -223,11 +229,12 @@ public class Method {
             System.out.printf("%10s | %10s | %15s | %15s | %8s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("---------------------------------------------------------------------------");
 
-            // Sort and print entries present to past date
+            // Sort and display entries in descending order from most recent to past date
             Collections.sort(transactions, (d1, d2) -> {
-                LocalDate descend = LocalDate.parse(d1.getDate(), fmtDate);
-                LocalDate ascend = LocalDate.parse(d2.getDate(), fmtDate);
-                return ascend.compareTo(descend); // Sort in order descending
+                LocalDate recent = LocalDate.parse(d1.getDate(), fmtDate);
+                LocalDate previous = LocalDate.parse(d2.getDate(), fmtDate);
+                return previous.compareTo(recent); //compare and sort in recent to past order
+
             });
             //loop through and display transactions less than 0
             for (Transaction debit : debits) {
@@ -242,24 +249,27 @@ public class Method {
 
         } while (!Console.PromptForYesNo("\nGo back?" )); //end loop when user inputs Yes
     }
+
     //method designed to show and prompt user with filter options
     public static void displayReports(){
         int command;
+
+        System.out.println("---------------------------------------------------------------------------");
+        System.out.println("                           Look Up Reports ");
+        System.out.println("---------------------------------------------------------------------------");
+        System.out.println(" 1) Filter by Month to Date " +
+                "\n 2) Filter by Previous Month" +
+                "\n 3) Filter by Year to Date" +
+                "\n 4) Filter by Previous Year" +
+                "\n 5) Filter by Vendor " +
+                "\n 6) Custom Filter " +
+                "\n 0) Go back to Ledger ");
+
         //stay in current display while all conditions are true
         while(true) {
-            System.out.println("---------------------------------------------------------------------------");
-            System.out.println("                           Look Up Reports ");
-            System.out.println("---------------------------------------------------------------------------");
-            System.out.println(" 1) Filter by Month to Date " +
-                    "\n 2) Filter by Previous Month" +
-                    "\n 3) Filter by Year to Date" +
-                    "\n 4) Filter by Previous Year" +
-                    "\n 5) Filter by Vendor " +
-                    "\n 6) Custom Filter " +
-                    "\n 0) Go back to Ledger ");
                         try {
                             //prompt user for command and return a filter method
-                            command = Console.PromptForInt(("\n Enter [0, 1, 2, 3, 4, 5, 6] "));
+                            command = Console.PromptForInt(("\n Enter [0, 1, 2, 3, 4, 5, 6] to continue "));
 
                             if (command == 0) {
                                 return;
@@ -277,19 +287,19 @@ public class Method {
                                 filterByPreviousYear(transactions);
                             }
                             if (command == 5) {
-                                searchByVendor(transactions);
+                                filterByVendor(transactions);
                             }
                             if (command == 6){
                                 customFilter(transactions);
                             }
                             else {
-                                System.out.println("Invalid");
+                                System.out.println(" \nInvalid entry");
                             }
                         }
-                        //catch invalid command and reset
+                        //if user enters a string catch error
                         catch (Exception e){
-                         // e.printStackTrace();  //show errors
-                            System.out.println("Invalid entry. \n");
+                         // e.printStackTrace();  //show errors when caught
+                            System.out.println("Invalid entry. ");
                         }
         }
     }
@@ -309,35 +319,39 @@ public class Method {
 
             //determine if a deposit is recent or old
             boolean choice = Console.PromptForYesNo("Is this deposit recent?");
-            //if the user is adding a recent deposit set date and time to current
-            if (choice) {
-                date = current.format(fmtDate);
-                time = current.format(fmtTime);
-                description = Console.PromptForString(" Description: ");
-                vendor = Console.PromptForString(" Vendor: ");
-                amount = Console.PromptForDouble(" Amount: ");
-                Transaction deposit = new Transaction(date, time, description, vendor, amount);
-                System.out.println("\n $" + amount + " deposit ending...");
-                transactions.add(deposit);
-                saveTransaction();
-            }
-            //if deposit is adding a previous deposit prompt for date and time
-            if(!choice) {
-                date = Console.PromptForString(" Date: ");
-                time = Console.PromptForString(" Time: ");
-                description = Console.PromptForString(" Description: ");
-                vendor = Console.PromptForString(" Vendor: ");
-                amount = Console.PromptForDouble(" Amount: ");
-                Transaction deposit = new Transaction(date, time, description, vendor, amount);
-                System.out.println("\n $" + amount + " deposit pending...");
-                transactions.add(deposit);
-                saveTransaction();
+            try {
+                //if the user is adding a recent deposit set date and time to current
+                if (choice) {
+                    date = current.format(fmtDate);
+                    time = current.format(fmtTime);
+                    description = Console.PromptForString(" Description: ");
+                    vendor = Console.PromptForString(" Vendor: ");
+                    amount = Console.PromptForDouble(" Amount: ");
+                    Transaction deposit = new Transaction(date, time, description, vendor, amount);
+                    System.out.println("                     $" + amount + " deposit ending...");
+                    transactions.add(deposit);
+                    saveTransaction();
+                }
+                //if deposit is adding a previous deposit prompt for date and time
+                if (!choice) {
+                    date = Console.PromptForString(" Date: ");
+                    time = Console.PromptForString(" Time: ");
+                    description = Console.PromptForString(" Description: ");
+                    vendor = Console.PromptForString(" Vendor: ");
+                    amount = Console.PromptForDouble(" Amount: ");
+                    Transaction deposit = new Transaction(date, time, description, vendor, amount);
+                    System.out.println("                   $" + amount + " deposit pending...");
+                    transactions.add(deposit);
+                    saveTransaction();
+                }
+            } catch (Exception e){
+                System.out.println("\n ERROR! Deposit can not be process... ");
             }
         }
         while(Console.PromptForYesNo("\nAdd new deposit?")); //end loop when user inputs No
     }
 
-    //method designed to loop through transactions and return deposit total
+    //method designed to loop through transactions and return deposit total * added feature *
     private static double accountDepositTotal(ArrayList<Transaction> transactions){
         double total = 0.0;
         for (int i = 0; i < transactions.size(); i++){
@@ -362,37 +376,41 @@ public class Method {
             //determine if a debit is recent or old
             boolean choice = Console.PromptForYesNo("Is this payment recent?");
 
-            //if the user is adding a recent debit set date and time to current
-            if (choice) {
-                date = current.format(fmtDate);
-                time = current.format(fmtTime);
-                description = Console.PromptForString(" Description: ");
-                vendor = Console.PromptForString(" Vendor: ");
-                amount = Console.PromptForDouble(" Amount: ");
-                double negAmount = convertToNegative(amount); //convert from positive to negative
-                Transaction debit = new Transaction(date, time, description, vendor, negAmount);
-                System.out.println("\n $" + negAmount + " Debit pending...");
-                transactions.add(debit);
-                saveTransaction();
-            }
+            try {
+                //if the user is adding a recent debit set date and time to current
+                if (choice) {
+                    date = current.format(fmtDate);
+                    time = current.format(fmtTime);
+                    description = Console.PromptForString(" Description: ");
+                    vendor = Console.PromptForString(" Vendor: ");
+                    amount = Console.PromptForDouble(" Amount: ");
+                    double negAmount = convertToNegative(amount); //convert from positive to negative
+                    Transaction debit = new Transaction(date, time, description, vendor, negAmount);
+                    System.out.println("                    $" + negAmount + " Debit pending...");
+                    transactions.add(debit);
+                    saveTransaction();
+                }
 
-            //if deposit is adding a previous debit prompt for date and time
-            if(!choice) {
-                date = Console.PromptForString(" Date: ");
-                time = Console.PromptForString(" Time: ");
-                description = Console.PromptForString(" Description: ");
-                vendor = Console.PromptForString(" Vendor: ");
-                amount = Console.PromptForDouble(" Amount : ");
-                double negAmount = convertToNegative(amount); //convert from positive to negative
-                Transaction deposit = new Transaction(date, time, description, vendor, negAmount);
-                System.out.println("\n $" + negAmount + " Debit pending...");
-                transactions.add(deposit);
-                saveTransaction();
+                //if deposit is adding a previous debit prompt for date and time
+                if (!choice) {
+                    date = Console.PromptForString(" Date: ");
+                    time = Console.PromptForString(" Time: ");
+                    description = Console.PromptForString(" Description: ");
+                    vendor = Console.PromptForString(" Vendor: ");
+                    amount = Console.PromptForDouble(" Amount : ");
+                    double negAmount = convertToNegative(amount); //convert from positive to negative
+                    Transaction deposit = new Transaction(date, time, description, vendor, negAmount);
+                    System.out.println("                      $" + negAmount + " Debit pending...");
+                    transactions.add(deposit);
+                    saveTransaction();
+                }
+            } catch (Exception e){
+                System.out.println("\n ERROR! Debit can not be processed... ");
             }
         } while (Console.PromptForYesNo(" \nAdd new debit?")); //end loop when user input  no
     }
 
-    //method designed to make a positive number negative
+    //method designed to make a positive number negative * added feature *
     private static double convertToNegative(double number){
         if (number > 0) {
             return -number;
@@ -402,7 +420,7 @@ public class Method {
         }
     }
 
-    //method designed to loop through transactions and return debit total
+    //method designed to loop through transactions and return debit total * added feature*
     private static double accountDebitTotal(ArrayList<Transaction> transactions){
         double total = 0.0;
         for (int i = 0; i < transactions.size(); i++){
@@ -428,11 +446,11 @@ public class Method {
             System.out.printf("%10s | %10s | %15s | %15s | %8s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("---------------------------------------------------------------------------");
 
-            // Sort and print entries present to past date
+            // Sort and display entries in descending order from most recent to past date
             Collections.sort(transactions, (d1, d2) -> {
-                LocalDate descend = LocalDate.parse(d1.getDate(), fmtDate);
-                LocalDate ascend = LocalDate.parse(d2.getDate(), fmtDate);
-                return ascend.compareTo(descend); // Sort in order descending
+                LocalDate recent = LocalDate.parse(d1.getDate(), fmtDate);
+                LocalDate previous = LocalDate.parse(d2.getDate(), fmtDate);
+                return previous.compareTo(recent);
             });
             // Loop through each transaction and find date in the range
             for (Transaction date : dates) {
@@ -461,11 +479,11 @@ public class Method {
             System.out.println("---------------------------------------------------------------------------");
             System.out.printf("%10s | %10s | %15s | %15s | %8s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("---------------------------------------------------------------------------");
-            // Sort and print entries present to past date
+            // Sort and display entries in descending order from most recent to past date
             Collections.sort(transactions, (d1, d2) -> {
-                LocalDate descend = LocalDate.parse(d1.getDate(), fmtDate);
-                LocalDate ascend = LocalDate.parse(d2.getDate(), fmtDate);
-                return ascend.compareTo(descend); // Sort in order descending
+                LocalDate recent = LocalDate.parse(d1.getDate(), fmtDate);
+                LocalDate previous = LocalDate.parse(d2.getDate(), fmtDate);
+                return previous.compareTo(recent);
             });
             // Loop through array to find all transactions in range specific
             for (Transaction date : dates) {
@@ -496,11 +514,11 @@ public class Method {
             System.out.println("---------------------------------------------------------------------------");
             System.out.printf("%10s | %10s | %15s | %15s | %8s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("---------------------------------------------------------------------------");
-            // Sort and print entries present to past date
+            // Sort and display entries in descending order from most recent to past date
             Collections.sort(transactions, (d1, d2) -> {
-                LocalDate descend = LocalDate.parse(d1.getDate(), fmtDate);
-                LocalDate ascend = LocalDate.parse(d2.getDate(), fmtDate);
-                return ascend.compareTo(descend); // Sort in order descending
+                LocalDate recent = LocalDate.parse(d1.getDate(), fmtDate);
+                LocalDate previous = LocalDate.parse(d2.getDate(), fmtDate);
+                return previous.compareTo(recent);
             });
             // Loop through array to find all transactions in range specific
             for (Transaction date : dates) {
@@ -529,11 +547,11 @@ public class Method {
             System.out.println("---------------------------------------------------------------------------");
             System.out.printf("%10s | %10s | %15s | %15s | %8s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("---------------------------------------------------------------------------");
-            // Sort and print entries present to past date
+            // Sort and display entries in descending order from most recent to past date
             Collections.sort(transactions, (d1, d2) -> {
-                LocalDate descend = LocalDate.parse(d1.getDate(), fmtDate);
-                LocalDate ascend = LocalDate.parse(d2.getDate(), fmtDate);
-                return ascend.compareTo(descend); // Sort in order descending
+                LocalDate recent = LocalDate.parse(d1.getDate(), fmtDate);
+                LocalDate previous = LocalDate.parse(d2.getDate(), fmtDate);
+                return previous.compareTo(recent);
             });
             // Loop through array to find all transactions in range specific
             for (Transaction date : dates) {
@@ -551,7 +569,7 @@ public class Method {
         while (!Console.PromptForYesNo("\nGo back? ")); // loop ends when user inputs Yes
     }
     //pre-defined method designed to filter transaction by vendor
-    private static void searchByVendor(ArrayList<Transaction> vendors) {
+    private static void filterByVendor(ArrayList<Transaction> vendors) {
         //loop while response is no
         do {
             String search = Console.PromptForString("Enter Vendor: ");
@@ -562,12 +580,11 @@ public class Method {
             System.out.println("---------------------------------------------------------------------------");
             //sort and display in order from present to past
 
-            // Sort and print entries present to past date
-            // Sort and print entries present to past date
+            // Sort and display entries in descending order from most recent to past date
             Collections.sort(transactions, (d1, d2) -> {
-                LocalDate descend = LocalDate.parse(d1.getDate(), fmtDate);
-                LocalDate ascend = LocalDate.parse(d2.getDate(), fmtDate);
-                return ascend.compareTo(descend); // Sort in order descending
+                LocalDate recent = LocalDate.parse(d1.getDate(), fmtDate);
+                LocalDate previous = LocalDate.parse(d2.getDate(), fmtDate);
+                return previous.compareTo(recent);
             });
 
             for (Transaction entry : vendors) {
@@ -618,11 +635,11 @@ public class Method {
                     continue;  // Restart the loop and prompt input
                 }
             }
-            // Sort and print entries present to past date
+            // Sort and display entries in descending order from most recent to past date
             Collections.sort(transactions, (d1, d2) -> {
-                LocalDate descend = LocalDate.parse(d1.getDate(), fmtDate);
-                LocalDate ascend = LocalDate.parse(d2.getDate(), fmtDate);
-                return ascend.compareTo(descend); // Sort in order descending
+                LocalDate recent = LocalDate.parse(d1.getDate(), fmtDate);
+                LocalDate previous = LocalDate.parse(d2.getDate(), fmtDate);
+                return previous.compareTo(recent);
             });
 
             boolean found = false;
