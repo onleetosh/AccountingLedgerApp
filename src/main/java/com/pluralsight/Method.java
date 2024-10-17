@@ -8,11 +8,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
 import java.util.regex.Pattern;
 
 /***
- * This class contains several methods that perform specific actions when called
+ * "Method" class contains several methods that perform specific actions when called on
  */
 public class Method {
 
@@ -55,7 +54,7 @@ public class Method {
                     }
                 }
             }
-            br.close();
+            br.close(); //close and release the data
         } catch (Exception e) {
             System.out.println("ERROR!!");
             e.printStackTrace();
@@ -81,7 +80,7 @@ public class Method {
                     newTransaction.getAmount() + "\n";
 
             fw.write(data); // Write the transaction data to the file.
-            bw.close(); //close and release resources
+            bw.close(); //close and release the date
         } catch (Exception e) {
             System.out.println("FILE WRITE ERROR");
         }
@@ -95,12 +94,11 @@ public class Method {
         System.out.println("------------------------------------------------------------------------");
         System.out.println("                            Home Screen ");
         System.out.println("------------------------------------------------------------------------");
-
-        System.out.println(" D) Add Deposit \n P) Make Payment \n L) Ledger \n X) Exit");
+        System.out.println(" D) Add Deposit \n P) Make Payment \n L) Ledger \n X) Exit ");
 
         while(true) {
-            System.out.println("\nEnters [D, P, L, X] to continue ");
-            String command = Console.PromptForString();
+
+            String command = Console.PromptForString(("\nEnters [D, P, L, X] to continue "));
 
             if ( command.equalsIgnoreCase("D")){
                 return 'D';
@@ -131,15 +129,14 @@ public class Method {
         System.out.println("                            Ledger ");
         System.out.println("------------------------------------------------------------------------");
 
-        System.out.println(" A) Entries - Display Account Details" +
-                " \n D) Deposits - Display only the entries that are deposits into the account " +
-                "\n P) Payments - Display only the Debit entries " +
+        System.out.println(" A) Account Details " +
+                " \n D) Deposits " +
+                "\n P) Payments  " +
                 "\n R) Reports " +
-                "\n H) Home " );
+                "\n H) Home  " );
         do {
             //prompt user for input and return the value
-            System.out.println("\nEnter [A, D, P, R, H] to continue");
-            String command = Console.PromptForString();
+            String command = Console.PromptForString(("\nEnter [A, D, P, R, H] to continue "));
 
             if (command.equalsIgnoreCase("A")){
                 return 'A';
@@ -164,7 +161,7 @@ public class Method {
     public static void displayAllEntries(ArrayList<Transaction> entries) {
         //stay in current display and wait for a response Yes or NO
         do {
-            System.out.println("                             Account Entries");
+            System.out.println("\n                               Account");
             System.out.println("------------------------------------------------------------------------");
             System.out.printf("%10s | %10s | %15s | %15s | %s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("------------------------------------------------------------------------");
@@ -175,52 +172,56 @@ public class Method {
             }
         } while(!Console.PromptForYesNo("\nGo back?")); //end loop when user inputs Yes
     }
-    //method designed to show positive transactions
+    //method designed to filter and show positive transactions
     public static void displayDeposits(ArrayList<Transaction> deposits){
         //stay in current display and wait for a response Yes or NO
         do {
             //display headline
-            System.out.println("                                 Deposits");
+            System.out.println("------------------------------------------------------------------------");
+            System.out.println("                               Deposits");
             System.out.println("------------------------------------------------------------------------");
             System.out.printf("%10s | %10s | %15s | %15s | %s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("------------------------------------------------------------------------");
 
             //loop through and display transactions greater than 0
-            for (Transaction entry : deposits) {
-            if (entry.getAmount() > 0) {
+            for (Transaction deposit : deposits) {
+            if (deposit.getAmount() > 0) {
                 System.out.printf("%10s | %10s | %15s | %15s |  $%.2f \n",
-                        entry.getDate(), entry.getTime(), entry.getDescription(), entry.getVendor(), entry.getAmount());
+                        deposit.getDate(), deposit.getTime(), deposit.getDescription(), deposit.getVendor(), deposit.getAmount());
                 }
             }
+            System.out.printf("\n\t           Total Deposit Balance: $%.2f \n", showDepositBalance(transactions));
         }  while(!Console.PromptForYesNo("\nGo back?")); //end loop when user inputs Yes
     }
 
-    //method displayed to show negative transactions
-    public static void displayDebitEntries(ArrayList<Transaction> entries){
+    //method designed to filter and show negative transactions
+    public static void displayDebitEntries(ArrayList<Transaction> debits){
         //keep showing display and wait for a response Yes or NO
         do {
             //display format
-            System.out.println("                                 Debits");
+            System.out.println("------------------------------------------------------------------------");
+            System.out.println("                               Debits");
             System.out.println("------------------------------------------------------------------------");
             System.out.printf("%10s | %10s | %15s | %15s | %s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("------------------------------------------------------------------------");
 
             //loop through and display transactions less than 0
-            for (Transaction entry : entries) {
-                if (entry.getAmount() < 0) {
+            for (Transaction debit : debits) {
+                if (debit.getAmount() < 0) {
                     System.out.printf("%10s | %10s | %15s | %15s |  $%.2f \n",
-                            entry.getDate(), entry.getTime(), entry.getDescription(), entry.getVendor(), entry.getAmount());
+                            debit.getDate(), debit.getTime(), debit.getDescription(), debit.getVendor(), debit.getAmount());
                 }
             }
+            System.out.printf("\n\t            Total Debit Amount $%.2f \n", showDebitBalance(transactions));
         } while (!Console.PromptForYesNo("\nGo back?")); //end loop when user inputs Yes
     }
-    //display a screen to allow user to perform custom search
+    //method designed to show and prompt user with filter options
     public static void displayReports(){
         int option;
         //stay in current display while true
         while(true) {
             System.out.println("------------------------------------------------------------------------");
-            System.out.println("                           Look Up Report ");
+            System.out.println("                           Look Up Reports ");
             System.out.println("------------------------------------------------------------------------");
 
             System.out.println(" 1) Filter by Month to Date " +
@@ -229,10 +230,10 @@ public class Method {
                     "\n 4) Filter by Previous Year" +
                     "\n 5) Filter by Vendor " +
                     "\n 0) Go back - Ledger ");
-            System.out.println("\n Enter [0, 1, 2, 3, 4, 5,]");
+           // System.out.println;
                         try {
                             //prompt user for command and return a filter method
-                            option = Console.PromptForInt();
+                            option = Console.PromptForInt(("\n Enter [0, 1, 2, 3, 4, 5,]"));
 
                             switch (option){
                                 case 0:
@@ -271,7 +272,7 @@ public class Method {
         do {
             // System.out.println(" \n ---- Debit ----- ");
             System.out.println("------------------------------------------------------------------------");
-            System.out.println("                            New Debit ");
+            System.out.println("                            Debit Account ");
             System.out.println("------------------------------------------------------------------------");
 
             //declare variables
@@ -279,7 +280,7 @@ public class Method {
             double amount;
 
             //determine if a debit is recent or old
-            boolean choice = Console.PromptForYesNo("Is this debit recent?");
+            boolean choice = Console.PromptForYesNo("Is this payment recent?");
 
             //if the user is adding a recent debit set date and time to current
             if (choice) {
@@ -288,9 +289,12 @@ public class Method {
                 description = Console.PromptForString(" Description: ");
                 vendor = Console.PromptForString(" Vendor: ");
                 amount = Console.PromptForFloat(" Amount: ");
-                Transaction debit = new Transaction(date, time, description, vendor, amount);
+                double negAmount = convertToNegative(amount); //convert from positive to negative
+                Transaction debit = new Transaction(date, time, description, vendor, negAmount);
                 transactions.add(debit);
                 saveTransaction();
+                System.out.printf("\nTotal debit amount: $%.2f", showDebitBalance(transactions));
+
             }
 
             //if deposit is adding a previous debit prompt for date and time
@@ -300,12 +304,45 @@ public class Method {
                 description = Console.PromptForString(" Description: ");
                 vendor = Console.PromptForString(" Vendor: ");
                 amount = Console.PromptForFloat(" Amount: ");
-                Transaction deposit = new Transaction(date, time, description, vendor, amount);
+                double negAmount = convertToNegative(amount); //convert from positive to negative
+                Transaction deposit = new Transaction(date, time, description, vendor, negAmount);
                 transactions.add(deposit);
                 saveTransaction();
+                System.out.printf("\nTotal debit amount $%.2f", showDebitBalance(transactions));
+
             }
         }
         while (Console.PromptForYesNo(" \nAdd another debit? ")); //end loop when user input  no
+    }
+
+    //method designed to make a positive number negative
+    private static double convertToNegative(double number){
+        if (number > 0) {
+            return -number;
+        }
+        else {
+            return number;
+        }
+    }
+    //method designed to loop through transactions and return deposit total
+    private static double showDepositBalance(ArrayList<Transaction> transactions){
+        double balance = 0.0;
+        for (int i = 0; i < transactions.size(); i++){
+                balance += transactions.get(i).getAmount();
+            }
+        return balance;
+        }
+
+    //method designed to loop through transactions and return debit total
+    private static double showDebitBalance(ArrayList<Transaction> transactions){
+        double balance = 0.0;
+        for (int i = 0; i < transactions.size(); i++){
+            double amount = transactions.get(i).getAmount();
+            if(amount < 0) {
+                balance += amount;
+            }
+        }
+        return balance;
     }
 
     //method designed to prompt user for deposit information and save to the csv file
@@ -333,6 +370,8 @@ public class Method {
                     Transaction deposit = new Transaction(date, time, description, vendor, amount);
                     transactions.add(deposit);
                     saveTransaction();
+                   // System.out.printf("\nYou have a balance of $%.2f", showDepositBalance(transactions));
+
                 }
                 //if deposit is adding a previous deposit prompt for date and time
                 if(!choice) {
@@ -344,22 +383,26 @@ public class Method {
                     Transaction deposit = new Transaction(date, time, description, vendor, amount);
                     transactions.add(deposit);
                     saveTransaction();
+                    //System.out.printf("\nYou have a balance of $%.2f", showDepositBalance(transactions));
                 }
         }
         while(Console.PromptForYesNo("\nAdd another Deposit?")); //end loop when user inputs No
     }
 
-    //method designed to show all transactions from october
+    //pre-defined method designed to show all transactions in October up to current date
     private static void filterByMonthToDate(ArrayList<Transaction> dates) {
         //keep showing display and wait for a response Yes or NO
         do {
             //declare range to filter
-            LocalDate today = LocalDate.from(current).plusDays(1);  // + 1 to include current date in range
-            LocalDate endOfRange = today.withDayOfMonth(1).minusDays(1); // -1 to include 1st day of month in range
+            // + 1 to include current date in filter range
+            LocalDate today = LocalDate.from(current).plusDays(1);
+            // -1 to include 1st day of month in filter range
+            LocalDate endOfRange = today.withDayOfMonth(1).minusDays(1);
 
             boolean found = false;
 
-            System.out.println("                           M-T-D Entries");
+            System.out.println("------------------------------------------------------------------------");
+            System.out.println("                           Month to Date Entries");
             System.out.println("------------------------------------------------------------------------");
             System.out.printf("%10s | %10s | %15s | %15s | %s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("------------------------------------------------------------------------");
@@ -380,18 +423,18 @@ public class Method {
         }
         while(!Console.PromptForYesNo("Would you like to change filter?")); // loop ends when user inputs Yes
     }
-    //method designed to show all transactions from september
+    //pre-defined method designed to show all transactions in September
     private static void filterByPreviousMonth(ArrayList<Transaction> dates) {
         //keep showing display and wait for a response Yes or NO
         do {
             //declare range to filter
-            //-1 to include sept 1 in range
+            //-1 to include sept 1 in the filter range
             LocalDate startOfRange = LocalDate.from(current.withMonth(9)).withDayOfMonth(1).minusDays(1);
-            //+1 to include sept 30 in range
+            //+1 to include sept 30 in the filter range
             LocalDate endOfRange = LocalDate.from(current.withMonth(9)).withDayOfMonth(30).plusDays(1);
 
             boolean found = false;
-
+            System.out.println("------------------------------------------------------------------------");
             System.out.println("                           Previous Month's Entries");
             System.out.println("------------------------------------------------------------------------");
             System.out.printf("%10s | %10s | %15s | %15s | %s \n", "date", "time", "description", "vendor", "amount");
@@ -414,19 +457,20 @@ public class Method {
         }
         while(!Console.PromptForYesNo("Would you like to change filter?")); // loop ends when user inputs Yes
     }
-    // method designed to show all transactions from year 2024
+    //pre-defined method designed to show all transactions in year 2024 up to current date
     private static void filterByYearToDate(ArrayList<Transaction> dates) {
         //keep showing display and wait for a response Yes or NO
         do {
             //declare range to filter
-            //+1 to include current day in range
+            //+1 to include current day in the filter range
             LocalDate today = LocalDate.from(current).plusDays(1);
-            //-1 to include Jan 1 2024 in range
+            //-1 to include Jan 1 2024 in the filter range
             LocalDate startOfRange = LocalDate.from(current.withMonth(1)).withDayOfMonth(1).minusDays(1);
 
             boolean found = false;
 
-            System.out.println("                          Y-T-D Entries");
+            System.out.println("------------------------------------------------------------------------");
+            System.out.println("                          Year to Date Entries");
             System.out.println("------------------------------------------------------------------------");
             System.out.printf("%10s | %10s | %15s | %15s | %s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("------------------------------------------------------------------------");
@@ -447,18 +491,18 @@ public class Method {
             }
         }
         while(!Console.PromptForYesNo("Would you like to change filter?")); // loop ends when user inputs Yes
-
     }
-    //show all transactions from data in 2023
+    //pre-defined method designed to show all transactions in 2023
     private static void filterByPreviousYear(ArrayList<Transaction> dates) {
        //loop while response is No
         do {
             //declare range to filter
-            //-1 to include sept 1 in range
+            //-1 to include sept 1 in the filter range
             LocalDate startOfRange = LocalDate.from(current.withMonth(1)).withDayOfMonth(1).minusDays(1);
 
             boolean found = false;
             //display header
+            System.out.println("------------------------------------------------------------------------");
             System.out.println("                           Previous Year Entries");
             System.out.println("------------------------------------------------------------------------");
             System.out.printf("%10s | %10s | %15s | %15s | %s \n", "date", "time", "description", "vendor", "amount");
@@ -481,6 +525,8 @@ public class Method {
         }
         while (!Console.PromptForYesNo("Would you like to change filter?")); // loop ends when user inputs Yes
     }
+
+    //pre-defined method designed to filter transaction by vendor
     private static void searchByVendor(ArrayList<Transaction> vendors) {
         //loop while response is no
         do {
@@ -502,5 +548,10 @@ public class Method {
                 System.out.println("No match found for vendor " + search);
             }
         } while(!Console.PromptForYesNo("Would you like to change filter?")); // loop ends when user inputs Yes
+    }
+
+    //method designed to perform a custom search
+    private static void customFilter(ArrayList<Transaction> custom){
+
     }
 }

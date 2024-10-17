@@ -3,10 +3,10 @@ package com.pluralsight;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-/***
- * This class is used to run test. Not part of the main Project and should not be used
- */
 
+/***
+ * "Test" class is used to run test. Not part of the main Project and should not be used
+ */
 public class Test {
 
     private static LocalDateTime current = LocalDateTime.now();

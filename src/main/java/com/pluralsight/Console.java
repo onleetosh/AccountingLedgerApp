@@ -1,10 +1,12 @@
 package com.pluralsight;
 
 import java.util.Scanner;
+
 /***
- * This class is for built for utility purpose with pre-defined methods
+ * Console class is for built for utility purpose with pre-defined methods
  * designed to request user input values
  */
+
 public class Console {
     static Scanner input = new Scanner(System.in);
 

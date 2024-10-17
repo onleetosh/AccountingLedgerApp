@@ -3,8 +3,9 @@ package com.pluralsight;
 import java.io.*;
 
 /***
- * This class is designed to provide an interactive menu, allowing a user to make decisions and perform
- * different actions by calling pre-defined methods
+ * "Display" class is designed to provide an interactive menu, allowing a user to
+ *  make decisions and perform different actions by calling pre-defined methods,
+ *  and is where the program runs
  */
 
 public class Display {

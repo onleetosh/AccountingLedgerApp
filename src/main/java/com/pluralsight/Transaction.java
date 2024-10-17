@@ -1,9 +1,9 @@
 package com.pluralsight;
 
 /***
- * This class stores and manages information for individual transactions
- * with details such as date, time, vendor, description, and amount;
- * and provides getter and setter methods to access and modify
+ * "Transaction" class stores and manages information for individual transactions
+ *  with details such as date, time, vendor, description, and amount;
+ *  and provides getter and setter methods to access and modify
  */
 
 public class Transaction {
