@@ -570,8 +570,8 @@ public class Method {
             System.out.println("---------------------------------------------------------------------------");
             System.out.println("                            Declaring filter");
             System.out.println("---------------------------------------------------------------------------");
-            String start = Console.PromptForString("Start Date (MM:dd:YYYY): ");
-            String end = Console.PromptForString("End Date (MM:dd:YYYY): ");
+            String start = Console.PromptForString("Start Date (MM-dd-YYYY): ");
+            String end = Console.PromptForString("End Date (MM-dd-YYYY): ");
             String description = Console.PromptForString("Description: ");
             String vendor = Console.PromptForString("Vendor: ");
             String amount = Console.PromptForString("Amount: ");
