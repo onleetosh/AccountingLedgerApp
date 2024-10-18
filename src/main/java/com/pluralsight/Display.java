@@ -10,7 +10,7 @@ public class Display {
 
     public static void main(String[] args) {
 
-            System.out.println("\n            Welcome to Year Up United beta \"CLI Application\"");
+            System.out.println("\n        Welcome to Year Up United beta \"Accounting Ledger Application\"");
 
         // declare a variable
             char userInput;
