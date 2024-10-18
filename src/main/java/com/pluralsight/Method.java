@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 // TODO : sort list in descending order from current to past entries
@@ -129,6 +129,7 @@ public class Method {
             }
         }
     }
+
     //method displayed to show Ledger with prompt details
     public static char displayLedgerPrompt() {
 
@@ -163,6 +164,7 @@ public class Method {
             }
         }
     }
+
     public static void displayAllEntries(ArrayList<Transaction> entries) {
 
         //stay in current display and wait for a response Yes or NO
@@ -172,13 +174,6 @@ public class Method {
             System.out.println("---------------------------------------------------------------------------");
             System.out.printf("%10s | %10s | %15s | %15s | %8s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("---------------------------------------------------------------------------");
-
-            // Sort and display entries in descending order from most recent to past date
-            Collections.sort(transactions, (d1, d2) -> {
-                LocalDate recent = LocalDate.parse(d1.getDate(), fmtDate);
-                LocalDate previous = LocalDate.parse(d2.getDate(), fmtDate);
-                return previous.compareTo(recent); //compare and sort in recent to past order
-            });
 
             for (Transaction entry : entries) {
                 System.out.printf("%10s | %10s | %15s | %15s |  $%.2f \n",
@@ -197,13 +192,6 @@ public class Method {
             System.out.println("---------------------------------------------------------------------------");
             System.out.printf("%10s | %10s | %15s | %15s | %8s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("---------------------------------------------------------------------------");
-
-            // Sort and print entries present to past date
-            Collections.sort(transactions, (d1, d2) -> {
-                LocalDate descend = LocalDate.parse(d1.getDate(), fmtDate);
-                LocalDate ascend = LocalDate.parse(d2.getDate(), fmtDate);
-                return ascend.compareTo(descend); // Sort in order descending
-            });
 
             //loop through and display transactions greater than 0
             for (Transaction deposit : deposits) {
@@ -229,13 +217,6 @@ public class Method {
             System.out.printf("%10s | %10s | %15s | %15s | %8s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("---------------------------------------------------------------------------");
 
-            // Sort and display entries in descending order from most recent to past date
-            Collections.sort(transactions, (d1, d2) -> {
-                LocalDate recent = LocalDate.parse(d1.getDate(), fmtDate);
-                LocalDate previous = LocalDate.parse(d2.getDate(), fmtDate);
-                return previous.compareTo(recent); //compare and sort in recent to past order
-
-            });
             //loop through and display transactions less than 0
             for (Transaction debit : debits) {
                 if (debit.getAmount() < 0) {
@@ -254,20 +235,20 @@ public class Method {
     public static void displayReports(){
         int command;
 
-        System.out.println("---------------------------------------------------------------------------");
-        System.out.println("                           Look Up Reports ");
-        System.out.println("---------------------------------------------------------------------------");
-        System.out.println(" 1) Filter by Month to Date " +
-                "\n 2) Filter by Previous Month" +
-                "\n 3) Filter by Year to Date" +
-                "\n 4) Filter by Previous Year" +
-                "\n 5) Filter by Vendor " +
-                "\n 6) Custom Filter " +
-                "\n 0) Go back to Ledger ");
-
         //stay in current display while all conditions are true
         while(true) {
-                        try {
+            System.out.println("---------------------------------------------------------------------------");
+            System.out.println("                           Look Up Reports ");
+            System.out.println("---------------------------------------------------------------------------");
+            System.out.println(" 1) Filter by Month to Date " +
+                    "\n 2) Filter by Previous Month" +
+                    "\n 3) Filter by Year to Date" +
+                    "\n 4) Filter by Previous Year" +
+                    "\n 5) Filter by Vendor " +
+                    "\n 6) Custom Filter " +
+                    "\n 0) Go back to Ledger ");
+
+            try {
                             //prompt user for command and return a filter method
                             command = Console.PromptForInt(("\n Enter [0, 1, 2, 3, 4, 5, 6] to continue "));
 
@@ -446,12 +427,6 @@ public class Method {
             System.out.printf("%10s | %10s | %15s | %15s | %8s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("---------------------------------------------------------------------------");
 
-            // Sort and display entries in descending order from most recent to past date
-            Collections.sort(transactions, (d1, d2) -> {
-                LocalDate recent = LocalDate.parse(d1.getDate(), fmtDate);
-                LocalDate previous = LocalDate.parse(d2.getDate(), fmtDate);
-                return previous.compareTo(recent);
-            });
             // Loop through each transaction and find date in the range
             for (Transaction date : dates) {
                 LocalDate transactionDate = LocalDate.parse(date.getDate(), fmtDate);
@@ -479,12 +454,7 @@ public class Method {
             System.out.println("---------------------------------------------------------------------------");
             System.out.printf("%10s | %10s | %15s | %15s | %8s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("---------------------------------------------------------------------------");
-            // Sort and display entries in descending order from most recent to past date
-            Collections.sort(transactions, (d1, d2) -> {
-                LocalDate recent = LocalDate.parse(d1.getDate(), fmtDate);
-                LocalDate previous = LocalDate.parse(d2.getDate(), fmtDate);
-                return previous.compareTo(recent);
-            });
+
             // Loop through array to find all transactions in range specific
             for (Transaction date : dates) {
                 //parse transaction dates string
@@ -514,12 +484,7 @@ public class Method {
             System.out.println("---------------------------------------------------------------------------");
             System.out.printf("%10s | %10s | %15s | %15s | %8s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("---------------------------------------------------------------------------");
-            // Sort and display entries in descending order from most recent to past date
-            Collections.sort(transactions, (d1, d2) -> {
-                LocalDate recent = LocalDate.parse(d1.getDate(), fmtDate);
-                LocalDate previous = LocalDate.parse(d2.getDate(), fmtDate);
-                return previous.compareTo(recent);
-            });
+
             // Loop through array to find all transactions in range specific
             for (Transaction date : dates) {
                 //parse transaction dates string
@@ -547,12 +512,7 @@ public class Method {
             System.out.println("---------------------------------------------------------------------------");
             System.out.printf("%10s | %10s | %15s | %15s | %8s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("---------------------------------------------------------------------------");
-            // Sort and display entries in descending order from most recent to past date
-            Collections.sort(transactions, (d1, d2) -> {
-                LocalDate recent = LocalDate.parse(d1.getDate(), fmtDate);
-                LocalDate previous = LocalDate.parse(d2.getDate(), fmtDate);
-                return previous.compareTo(recent);
-            });
+
             // Loop through array to find all transactions in range specific
             for (Transaction date : dates) {
                 //parse transaction dates string
@@ -568,6 +528,7 @@ public class Method {
         }
         while (!Console.PromptForYesNo("\nGo back? ")); // loop ends when user inputs Yes
     }
+
     //pre-defined method designed to filter transaction by vendor
     private static void filterByVendor(ArrayList<Transaction> vendors) {
         //loop while response is no
@@ -578,14 +539,6 @@ public class Method {
             System.out.println("---------------------------------------------------------------------------");
             System.out.printf("%10s | %10s | %15s | %15s | %8s \n", "date", "time", "description", "vendor", "amount");
             System.out.println("---------------------------------------------------------------------------");
-            //sort and display in order from present to past
-
-            // Sort and display entries in descending order from most recent to past date
-            Collections.sort(transactions, (d1, d2) -> {
-                LocalDate recent = LocalDate.parse(d1.getDate(), fmtDate);
-                LocalDate previous = LocalDate.parse(d2.getDate(), fmtDate);
-                return previous.compareTo(recent);
-            });
 
             for (Transaction entry : vendors) {
                 if (search.equalsIgnoreCase(entry.getVendor())) {
@@ -600,7 +553,6 @@ public class Method {
             }
         } while(!Console.PromptForYesNo("\nGo back?")); // loop ends when user inputs Yes
     }
-    //method designed to perform a custom search
 
     //method designed to perform a custom search
     private static void customFilter(ArrayList<Transaction> customSearch){
@@ -635,12 +587,6 @@ public class Method {
                     continue;  // Restart the loop and prompt input
                 }
             }
-            // Sort and display entries in descending order from most recent to past date
-            Collections.sort(transactions, (d1, d2) -> {
-                LocalDate recent = LocalDate.parse(d1.getDate(), fmtDate);
-                LocalDate previous = LocalDate.parse(d2.getDate(), fmtDate);
-                return previous.compareTo(recent);
-            });
 
             boolean found = false;
             System.out.println("---------------------------------------------------------------------------");
@@ -654,9 +600,10 @@ public class Method {
                 boolean checkPresentDate = present.isBlank() || transactionDate.isBefore(presentDate);
                 boolean checkDescription = description.isBlank() || description.equalsIgnoreCase(transaction.getDescription());
                 boolean checkVendor = vendor.isBlank() || vendor.equalsIgnoreCase(transaction.getVendor());
-                //Math.abs(compares the absolute difference between (ex. a and b)) and declares them equal if < 0.01
-                boolean checkAmount = amount.isBlank() || amount.equals(String.valueOf(transaction.getAmount()))
-                        || Math.abs( Double.parseDouble(amount) - transaction.getAmount() ) < 0.01  ; //compare a negative number
+
+                boolean checkAmount = amount.isBlank() ||
+                 (Double.parseDouble(amount) - transaction.getAmount() < 0.01
+                        && Double.parseDouble(amount) - transaction.getAmount() > -0.01) ; //compare a negative number
                 if( checkPastDate && checkPresentDate && checkDescription && checkVendor  && checkAmount) {
                     System.out.printf("%10s | %10s | %15s | %15s |  $%.2f \n",
                             transaction.getDate(), transaction.getTime(), transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
@@ -671,4 +618,5 @@ public class Method {
     }
 
 }
+
 
