@@ -585,7 +585,7 @@ public class Method {
                 try {
                     //convert String to LocalDate with format
                     startDate = LocalDate.parse(start, fmtDate);
-                } catch (DateTimeParseException e) {
+                } catch (Exception e) {
                     System.out.println("Invalid start date format!");
                     continue;  // Reset the loop and prompt input
                 }
@@ -596,7 +596,7 @@ public class Method {
                 try {
                     //convert String to LocalDate with format
                     endDate = LocalDate.parse(end, fmtDate);
-                } catch (DateTimeParseException e) {
+                } catch (Exception e) {
                     System.out.println("Invalid end date format!");
                     continue;  // Restart the loop and prompt input
                 }
