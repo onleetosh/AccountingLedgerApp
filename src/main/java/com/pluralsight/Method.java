@@ -320,8 +320,8 @@ public class Method {
                 }
                 //if deposit is adding a previous deposit prompt for date and time
                 if (!choice) {
-                    date = Console.PromptForString(" Date: ");
-                    time = Console.PromptForString(" Time: ");
+                    date = Console.PromptForString(" Date (MM-dd-YYYY): ");
+                    time = Console.PromptForString(" Time (HH:mm:ss): ");
                     description = Console.PromptForString(" Description: ");
                     vendor = Console.PromptForString(" Vendor: ");
                     amount = Console.PromptForDouble(" Amount: ");
@@ -380,8 +380,8 @@ public class Method {
 
                 //if deposit is adding a previous debit prompt for date and time
                 if (!choice) {
-                    date = Console.PromptForString(" Date: ");
-                    time = Console.PromptForString(" Time: ");
+                    date = Console.PromptForString(" Date (MM-dd-YYYY): ");
+                    time = Console.PromptForString(" Time (HH:mm:ss): ");
                     description = Console.PromptForString(" Description: ");
                     vendor = Console.PromptForString(" Vendor: ");
                     amount = Console.PromptForDouble(" Amount : ");
