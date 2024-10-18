@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.regex.Pattern;
 
 public class Method {
@@ -417,7 +418,7 @@ public class Method {
             // + 1 to include current date in filter range
             LocalDate today = LocalDate.from(current).plusDays(1);
             // -1 to include 1st day of month in filter range
-            LocalDate endOfRange = today.withDayOfMonth(1).minusDays(1);
+            LocalDate endRange = today.withDayOfMonth(1).minusDays(1);
             System.out.println("---------------------------------------------------------------------------");
             System.out.println("                           Month to Date Entries");
             System.out.println("---------------------------------------------------------------------------");
@@ -427,7 +428,7 @@ public class Method {
             // Loop through each transaction and find date in the range
             for (Transaction date : dates) {
                 LocalDate transactionDate = LocalDate.parse(date.getDate(), fmtDate);
-                if (transactionDate.isAfter(endOfRange) && transactionDate.isBefore(today)) {
+                if (transactionDate.isAfter(endRange) && transactionDate.isBefore(today)) {
                     // Print the transaction that falls within the range
                     System.out.printf("%10s | %10s | %15s | %15s |  $%.2f \n",
                             date.getDate(), date.getTime(), date.getDescription(), date.getVendor(), date.getAmount());
@@ -443,9 +444,9 @@ public class Method {
         do {
             //declare range to filter
             //-1 to include sept 1 in the filter range
-            LocalDate startOfRange = LocalDate.from(current.withMonth(9)).withDayOfMonth(1).minusDays(1);
+            LocalDate startRange = LocalDate.from(current.withMonth(9)).withDayOfMonth(1).minusDays(1);
             //+1 to include sept 30 in the filter range
-            LocalDate endOfRange = LocalDate.from(current.withMonth(9)).withDayOfMonth(30).plusDays(1);
+            LocalDate endRange = LocalDate.from(current.withMonth(9)).withDayOfMonth(30).plusDays(1);
             System.out.println("---------------------------------------------------------------------------");
             System.out.println("                           Previous Month's Entries");
             System.out.println("---------------------------------------------------------------------------");
@@ -457,7 +458,7 @@ public class Method {
                 //parse transaction dates string
                 LocalDate transactionDate = LocalDate.parse(date.getDate(), fmtDate);
                 //if transaction is after Aug 31 and before Oct 1 than print transaction
-                if (transactionDate.isAfter(startOfRange) && transactionDate.isBefore(endOfRange)) {
+                if (transactionDate.isAfter(startRange) && transactionDate.isBefore(endRange)) {
                     // Print the transaction that falls within the range
                     System.out.printf("%10s | %10s | %15s | %15s |  $%.2f \n",
                             date.getDate(), date.getTime(), date.getDescription(), date.getVendor(), date.getAmount());
@@ -475,7 +476,7 @@ public class Method {
             //+1 to include current day in the filter range
             LocalDate today = LocalDate.from(current).plusDays(1);
             //-1 to include Jan 1 2024 in the filter range
-            LocalDate startOfRange = LocalDate.from(current.withMonth(1)).withDayOfMonth(1).minusDays(1);
+            LocalDate endRange = LocalDate.from(current.withMonth(1)).withDayOfMonth(1).minusDays(1);
             System.out.println("---------------------------------------------------------------------------");
             System.out.println("                          Year to Date Entries");
             System.out.println("---------------------------------------------------------------------------");
@@ -487,7 +488,7 @@ public class Method {
                 //parse transaction dates string
                 LocalDate transactionDate = LocalDate.parse(date.getDate(), fmtDate);
                 //if transaction is after Aug 31 and before Oct 1 than print transaction
-                if (transactionDate.isAfter(startOfRange) && transactionDate.isBefore(today)) {
+                if (transactionDate.isAfter(endRange) && transactionDate.isBefore(today)) {
                     // Print the transaction that falls within the range
                     System.out.printf("%10s | %10s | %15s | %15s |  $%.2f \n",
                             date.getDate(), date.getTime(), date.getDescription(), date.getVendor(), date.getAmount());
@@ -503,7 +504,7 @@ public class Method {
         do {
             //declare range to filter
             //-1 to include sept 1 in the filter range
-            LocalDate startOfRange = LocalDate.from(current.withMonth(1)).withDayOfMonth(1).minusDays(1);
+            LocalDate startRange = LocalDate.from(current.withMonth(1)).withDayOfMonth(1).minusDays(1);
             System.out.println("---------------------------------------------------------------------------");
             System.out.println("                           Previous Year Entries");
             System.out.println("---------------------------------------------------------------------------");
@@ -515,7 +516,7 @@ public class Method {
                 //parse transaction dates string
                 LocalDate transactionDate = LocalDate.parse(date.getDate(), fmtDate);
                 //if transaction is after Aug 31 and before Oct 1 than print transaction
-                if (transactionDate.isBefore(startOfRange)) {
+                if (transactionDate.isBefore(startRange)) {
                     // Print the transaction that falls within the range
 
                     System.out.printf("%10s | %10s | %15s | %15s |  $%.2f \n",
