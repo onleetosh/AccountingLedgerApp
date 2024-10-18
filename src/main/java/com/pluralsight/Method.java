@@ -570,8 +570,8 @@ public class Method {
             System.out.println("---------------------------------------------------------------------------");
             System.out.println("                            Declaring filter");
             System.out.println("---------------------------------------------------------------------------");
-            String start = Console.PromptForString("Start Date: ");
-            String end = Console.PromptForString("End Date: ");
+            String start = Console.PromptForString("Start Date (MM:dd:YYYY): ");
+            String end = Console.PromptForString("End Date (MM:dd:YYYY): ");
             String description = Console.PromptForString("Description: ");
             String vendor = Console.PromptForString("Vendor: ");
             String amount = Console.PromptForString("Amount: ");
@@ -619,7 +619,7 @@ public class Method {
                 boolean checkDescription = description.isBlank() || description.equalsIgnoreCase(transaction.getDescription());
                 boolean checkVendor = vendor.isBlank() || vendor.equalsIgnoreCase(transaction.getVendor());
                 boolean checkAmount = amount.isBlank() ||
-                        //subtract the values and if less than < .01 or > -.01 declare them equal
+                        //Parse string to double, subtract the values and if total is less than < .01 or > -.01 they are declare equal
                         Double.parseDouble(amount) - transaction.getAmount() < 0.01 &&
                                 Double.parseDouble(amount) - transaction.getAmount() > -0.01;
                 //if any of these conditions are meet
