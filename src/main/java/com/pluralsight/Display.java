@@ -38,7 +38,7 @@ public class Display {
                             Method.displayDebitEntries(Method.transactions);
                         }
                         if (userInput == 'R') { //call report method
-                               Method.displayReports();
+                               Method.displayReportPrompt();
                         }
                     } while (userInput != 'H'); //break out of loop and return to home page
                 }

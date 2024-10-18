@@ -12,13 +12,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.regex.Pattern;
 
-// TODO : sort list in descending order from current to past entries
-
 public class Method {
-
 
     private static final String dataFileName = "transactions.csv";
     //declare a variable with objects from the array list
@@ -29,19 +25,19 @@ public class Method {
     private static final DateTimeFormatter fmtDate = DateTimeFormatter.ofPattern("MM-dd-yyyy");
     private static final DateTimeFormatter fmtTime = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-    //method designed to create an array list of transactions
+    //method designed to read the file and stores transactions in array list
     private static ArrayList<Transaction> getTransactions() {
-
+        //declare an empty array list
         ArrayList<Transaction> transactions = new ArrayList<>();
         try {
             //After creating a file comment out to avoid overwrite previous data
-             // BufferedWriter bw = new BufferedWriter( new FileWriter(dataFileName));
-             // bw.write("date|time|description|vendor|amount\n");
-             // bw.close();
+            //BufferedWriter bw = new BufferedWriter( new FileWriter(dataFileName));
+            //bw.write("date|time|description|vendor|amount\n");
+            //bw.close();
             BufferedReader br = new BufferedReader(new FileReader(dataFileName));
-
             String inputFile;
             while ((inputFile = br.readLine()) != null) {
+                //split tokens
                 String[] tokens = inputFile.split(Pattern.quote("|"));
 
                 // Check if the tokens array has the 5 elements
@@ -62,12 +58,12 @@ public class Method {
                     }
                 }
             }
-            br.close(); //close and release the data
+            br.close(); //close and release transactions
         } catch (Exception e) {
             System.out.println("ERROR!!");
             e.printStackTrace();
         }
-        return transactions;
+        return transactions; //add transactions to list
     }
 
     //method designed to save a transaction when added
@@ -137,7 +133,7 @@ public class Method {
         System.out.println("---------------------------------------------------------------------------");
         System.out.println("                                 Ledger");
         System.out.println("---------------------------------------------------------------------------");
-        System.out.println(" A) Account Details\n D) Deposits\n P) Payments\n R) Reports \n H) Home  " );
+        System.out.println(" A) Account \n D) Deposits\n P) Payments\n R) Reports \n H) Home  " );
 
         //loop while all conditions are true
         while(true) {
@@ -165,6 +161,7 @@ public class Method {
         }
     }
 
+    //method designed to show account details
     public static void displayAllEntries(ArrayList<Transaction> entries) {
 
         //stay in current display and wait for a response Yes or NO
@@ -232,9 +229,9 @@ public class Method {
     }
 
     //method designed to show and prompt user with filter options
-    public static void displayReports(){
-        int command;
+    public static void displayReportPrompt(){
 
+        int command;
         //stay in current display while all conditions are true
         while(true) {
             System.out.println("---------------------------------------------------------------------------");
@@ -248,7 +245,7 @@ public class Method {
                     "\n 6) Custom Filter " +
                     "\n 0) Go back to Ledger ");
 
-            try {
+                    try {
                             //prompt user for command and return a filter method
                             command = Console.PromptForInt(("\n Enter [0, 1, 2, 3, 4, 5, 6] to continue "));
 
@@ -277,11 +274,11 @@ public class Method {
                                 System.out.println(" \nInvalid entry");
                             }
                         }
-                        //if user enters a string catch error
-                        catch (Exception e){
+                    //if user enters a string catch error
+                    catch (Exception e) {
                          // e.printStackTrace();  //show errors when caught
                             System.out.println("Invalid entry. ");
-                        }
+                    }
         }
     }
 
@@ -332,7 +329,7 @@ public class Method {
         while(Console.PromptForYesNo("\nAdd new deposit?")); //end loop when user inputs No
     }
 
-    //method designed to loop through transactions and return deposit total * added feature *
+    //method designed to loop through transactions and return deposit total
     private static double accountDepositTotal(ArrayList<Transaction> transactions){
         double total = 0.0;
         for (int i = 0; i < transactions.size(); i++){
@@ -391,7 +388,7 @@ public class Method {
         } while (Console.PromptForYesNo(" \nAdd new debit?")); //end loop when user input  no
     }
 
-    //method designed to make a positive number negative * added feature *
+    //method designed to make a positive number negative
     private static double convertToNegative(double number){
         if (number > 0) {
             return -number;
@@ -401,7 +398,7 @@ public class Method {
         }
     }
 
-    //method designed to loop through transactions and return debit total * added feature*
+    //method designed to loop through transactions and return debit total
     private static double accountDebitTotal(ArrayList<Transaction> transactions){
         double total = 0.0;
         for (int i = 0; i < transactions.size(); i++){
@@ -558,30 +555,31 @@ public class Method {
     private static void customFilter(ArrayList<Transaction> customSearch){
         do {
             System.out.println("---------------------------------------------------------------------------");
-            System.out.println("                             Declare filter");
+            System.out.println("                            Declaring filter");
             System.out.println("---------------------------------------------------------------------------");
-            String past = Console.PromptForString("Past Date: "); //working
-            String present = Console.PromptForString("Present Date: ");//working
+            String start = Console.PromptForString("Start Date: "); //working
+            String end = Console.PromptForString("End Date: ");//working
             String description = Console.PromptForString("Description: "); //working
             String vendor = Console.PromptForString("Vendor: "); //working
             String amount = Console.PromptForString("Amount: ");
 
-            LocalDate pastDate = null;
-            LocalDate presentDate = null;
-
+            //initialize as null
+            LocalDate startDate = null;
+            LocalDate endDate = null;
             // Parse only if input is valid
-            if (!past.isBlank()) {
+            if (!start.isBlank()) {
                 try {
-                    pastDate = LocalDate.parse(past, fmtDate);
+                    startDate = LocalDate.parse(start, fmtDate);
                 } catch (DateTimeParseException e) {
                     System.out.println("Invalid start date format!");
                     continue;  // Reset the loop and prompt input
                 }
             }
+
             // Parse only if input is valid
-            if (!present.isBlank()) {
+            if (!end.isBlank()) {
                 try {
-                    presentDate = LocalDate.parse(present, fmtDate);
+                    endDate = LocalDate.parse(end, fmtDate);
                 } catch (DateTimeParseException e) {
                     System.out.println("Invalid end date format!");
                     continue;  // Restart the loop and prompt input
@@ -594,16 +592,18 @@ public class Method {
             System.out.println("---------------------------------------------------------------------------");
             for ( Transaction transaction: customSearch) {
 
+                //Parse date string to Local Date
                 LocalDate transactionDate = LocalDate.parse(transaction.getDate(), fmtDate);
 
-                boolean checkPastDate = past.isBlank() || transactionDate.isAfter(pastDate);
-                boolean checkPresentDate = present.isBlank() || transactionDate.isBefore(presentDate);
+                //if an entry is left blank or an entry is provided for dates, description, vendor and amount
+                boolean checkPastDate = start.isBlank() || transactionDate.isAfter(startDate) ;
+                boolean checkPresentDate = end.isBlank() || transactionDate.isBefore(endDate) ;
                 boolean checkDescription = description.isBlank() || description.equalsIgnoreCase(transaction.getDescription());
                 boolean checkVendor = vendor.isBlank() || vendor.equalsIgnoreCase(transaction.getVendor());
-
                 boolean checkAmount = amount.isBlank() ||
-                 (Double.parseDouble(amount) - transaction.getAmount() < 0.01
-                        && Double.parseDouble(amount) - transaction.getAmount() > -0.01) ; //compare a negative number
+                        //subtract the values and if less than < .01 or > -.01 declare them equal
+                         Double.parseDouble(amount) - transaction.getAmount() < 0.01 &&
+                         Double.parseDouble(amount) - transaction.getAmount() > -0.01;
                 if( checkPastDate && checkPresentDate && checkDescription && checkVendor  && checkAmount) {
                     System.out.printf("%10s | %10s | %15s | %15s |  $%.2f \n",
                             transaction.getDate(), transaction.getTime(), transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
