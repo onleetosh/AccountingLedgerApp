@@ -4,13 +4,15 @@
  */
 package com.pluralsight;
 
+import java.time.LocalDate;
+
 public class Display {
 
     public static void main(String[] args) {
 
-            System.out.println("\n Welcome to Year Up United beta \"CLI Application\"");
+            System.out.println("\n            Welcome to Year Up United beta \"CLI Application\"");
 
-            // declare a variable
+        // declare a variable
             char userInput;
             do {
                 //Begin user prompt

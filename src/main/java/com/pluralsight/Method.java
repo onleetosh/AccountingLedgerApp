@@ -166,6 +166,8 @@ public class Method {
     //method designed to show account details
     public static void displayAllEntries(ArrayList<Transaction> entries) {
 
+        //declare balance the sum of cumulative deposit and cumulative debit
+        double balance = accountDepositTotal(transactions) + accountDebitTotal(transactions);
         //stay in current display and wait for a response Yes or NO
         do {
             System.out.println("---------------------------------------------------------------------------");
@@ -179,6 +181,9 @@ public class Method {
                 System.out.printf("%10s | %10s | %15s | %15s |  $%.2f \n",
                         entry.getDate(), entry.getTime(), entry.getDescription(), entry.getVendor(), entry.getAmount());
             }
+            System.out.println("---------------------------------------------------------------------------");
+            System.out.printf("\t                 Account Balance: $%.2f \n", balance);
+            System.out.println("---------------------------------------------------------------------------");
         } while(!Console.PromptForYesNo("\nGo back?" )); //end loop when user inputs Yes
     }
 
@@ -422,7 +427,7 @@ public class Method {
             // Set start date to current day than add 1 to include current date in filter range
             LocalDate today = LocalDate.from(current).plusDays(1);
             // Set end date to Oct 1 then subtract 1 to include Oct 1st in filter range
-            LocalDate endRange = today.withDayOfMonth(1).minusDays(1);
+            LocalDate endRange = LocalDate.of(2024,10,1).minusDays(1);
             System.out.println("---------------------------------------------------------------------------");
             System.out.println("                           Month to Date Entries");
             System.out.println("---------------------------------------------------------------------------");
@@ -450,9 +455,9 @@ public class Method {
         //keep showing display and wait for a response Yes or NO
         do {
             //Set start date to Sept 1 than subtract 1 to include sept 1 in the filter range
-            LocalDate startRange = LocalDate.from(current.withMonth(9)).withDayOfMonth(1).minusDays(1);
+            LocalDate startRange = LocalDate.of(2024,9,1).minusDays(1);
             //Set end date to Sept 30 than add 1 to include sept 30 in the filter range
-            LocalDate endRange = LocalDate.from(current.withMonth(9)).withDayOfMonth(30).plusDays(1);
+            LocalDate endRange = LocalDate.of(2024,9,30).plusDays(1);
             System.out.println("---------------------------------------------------------------------------");
             System.out.println("                           Previous Month's Entries");
             System.out.println("---------------------------------------------------------------------------");
@@ -481,7 +486,7 @@ public class Method {
             // Set start date to current day than add 1 to include current date in filter range
             LocalDate today = LocalDate.from(current).plusDays(1);
             // set end date Jan 1st then subtract 1 to include Jan 1 2024 in the filter range
-            LocalDate endRange = LocalDate.from(current.withMonth(1)).withDayOfMonth(1).minusDays(1);
+            LocalDate endRange = LocalDate.of(2024,1 , 1).minusDays(1);
             System.out.println("---------------------------------------------------------------------------");
             System.out.println("                          Year to Date Entries");
             System.out.println("---------------------------------------------------------------------------");
@@ -508,7 +513,8 @@ public class Method {
         //loop while response is No
         do {
             // set start date Jan 1st then subtract 1 to include Jan 1 2024 in filter range
-            LocalDate startRange = LocalDate.from(current.withMonth(1)).withDayOfMonth(1).minusDays(1);
+            LocalDate startRange = LocalDate.of(2023, 1,1).minusDays(1);
+            LocalDate endRange = LocalDate.of(2023, 12,31).plusDays(1);
             System.out.println("---------------------------------------------------------------------------");
             System.out.println("                           Previous Year Entries");
             System.out.println("---------------------------------------------------------------------------");
@@ -520,7 +526,7 @@ public class Method {
                 //convert String to LocalDate
                 LocalDate transactionDate = LocalDate.parse(date.getDate(), fmtDate);
                 //if a transaction is before Jan 1st
-                if (transactionDate.isBefore(startRange)) {
+                if (transactionDate.isAfter(startRange) && transactionDate.isBefore(endRange)) {
                     // Print the transaction that falls within the range
                     System.out.printf("%10s | %10s | %15s | %15s |  $%.2f \n",
                             date.getDate(), date.getTime(), date.getDescription(), date.getVendor(), date.getAmount());
@@ -608,8 +614,8 @@ public class Method {
                 LocalDate transactionDate = LocalDate.parse(transaction.getDate(), fmtDate);
 
                 //if an entry is left blank or an entry is provided for dates, description, vendor and amount
-                boolean checkPastDate = start.isBlank() || transactionDate.isAfter(startDate) ;
-                boolean checkPresentDate = end.isBlank() || transactionDate.isBefore(endDate) ;
+                boolean checkPastDate = start.isBlank() || transactionDate.isAfter(startDate.plusDays(1)) ;
+                boolean checkPresentDate = end.isBlank() || transactionDate.isBefore(endDate.minusDays(1)) ;
                 boolean checkDescription = description.isBlank() || description.equalsIgnoreCase(transaction.getDescription());
                 boolean checkVendor = vendor.isBlank() || vendor.equalsIgnoreCase(transaction.getVendor());
                 boolean checkAmount = amount.isBlank() ||
