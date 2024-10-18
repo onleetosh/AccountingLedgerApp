@@ -192,9 +192,9 @@ public class Method {
 
             //loop through and display transactions greater than 0
             for (Transaction deposit : deposits) {
-            if (deposit.getAmount() > 0) {
-                System.out.printf("%10s | %10s | %15s | %15s |  $%.2f \n",
-                        deposit.getDate(), deposit.getTime(), deposit.getDescription(), deposit.getVendor(), deposit.getAmount());
+                if (deposit.getAmount() > 0) {
+                    System.out.printf("%10s | %10s | %15s | %15s |  $%.2f \n",
+                            deposit.getDate(), deposit.getTime(), deposit.getDescription(), deposit.getVendor(), deposit.getAmount());
                 }
             }
             System.out.println("---------------------------------------------------------------------------");
@@ -245,40 +245,40 @@ public class Method {
                     "\n 6) Custom Filter " +
                     "\n 0) Go back to Ledger ");
 
-                    try {
-                            //prompt user for command and return a filter method
-                            command = Console.PromptForInt(("\n Enter [0, 1, 2, 3, 4, 5, 6] to continue "));
+            try {
+                //prompt user for command and return a filter method
+                command = Console.PromptForInt(("\n Enter [0, 1, 2, 3, 4, 5, 6] to continue "));
 
-                            if (command == 0) {
-                                return;
-                            }
-                            if(command == 1) {
-                                filterByMonthToDate(transactions);
-                            }
-                            if (command == 2){
-                                filterByPreviousMonth(transactions);
-                            }
-                            if (command == 3) {
-                                filterByYearToDate(transactions);
-                            }
-                            if (command == 4){
-                                filterByPreviousYear(transactions);
-                            }
-                            if (command == 5) {
-                                filterByVendor(transactions);
-                            }
-                            if (command == 6){
-                                customFilter(transactions);
-                            }
-                            else {
-                                System.out.println(" \nInvalid entry");
-                            }
-                        }
-                    //if user enters a string catch error
-                    catch (Exception e) {
-                         // e.printStackTrace();  //show errors when caught
-                            System.out.println("Invalid entry. ");
-                    }
+                if (command == 0) {
+                    return;
+                }
+                if(command == 1) {
+                    filterByMonthToDate(transactions);
+                }
+                if (command == 2){
+                    filterByPreviousMonth(transactions);
+                }
+                if (command == 3) {
+                    filterByYearToDate(transactions);
+                }
+                if (command == 4){
+                    filterByPreviousYear(transactions);
+                }
+                if (command == 5) {
+                    filterByVendor(transactions);
+                }
+                if (command == 6){
+                    customFilter(transactions);
+                }
+                else {
+                    System.out.println(" \nInvalid entry");
+                }
+            }
+            //if user enters a string catch error
+            catch (Exception e) {
+                // e.printStackTrace();  //show errors when caught
+                System.out.println("Invalid entry. ");
+            }
         }
     }
 
@@ -499,7 +499,7 @@ public class Method {
 
     //pre-defined method designed to show all transactions in 2023
     private static void filterByPreviousYear(ArrayList<Transaction> dates) {
-       //loop while response is No
+        //loop while response is No
         do {
             //declare range to filter
             //-1 to include sept 1 in the filter range
@@ -602,8 +602,8 @@ public class Method {
                 boolean checkVendor = vendor.isBlank() || vendor.equalsIgnoreCase(transaction.getVendor());
                 boolean checkAmount = amount.isBlank() ||
                         //subtract the values and if less than < .01 or > -.01 declare them equal
-                         Double.parseDouble(amount) - transaction.getAmount() < 0.01 &&
-                         Double.parseDouble(amount) - transaction.getAmount() > -0.01;
+                        Double.parseDouble(amount) - transaction.getAmount() < 0.01 &&
+                                Double.parseDouble(amount) - transaction.getAmount() > -0.01;
                 if( checkPastDate && checkPresentDate && checkDescription && checkVendor  && checkAmount) {
                     System.out.printf("%10s | %10s | %15s | %15s |  $%.2f \n",
                             transaction.getDate(), transaction.getTime(), transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
@@ -616,7 +616,4 @@ public class Method {
             }
         } while(!Console.PromptForYesNo("\n Go back?")); // loop ends when user inputs Yes
     }
-
 }
-
-
