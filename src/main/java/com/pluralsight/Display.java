@@ -7,8 +7,10 @@ package com.pluralsight;
 public class Display {
 
     public static void main(String[] args) {
+
             System.out.println("\n Welcome to Year Up United beta \"CLI Application\"");
 
+            // declare a variable
             char userInput;
             do {
                 //Begin user prompt
